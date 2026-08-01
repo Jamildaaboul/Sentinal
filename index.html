@@ -438,18 +438,37 @@ function removeToast(id) {
   }
 }
 
-/* === PORTABLE DATA STATE === */
+/* === DATA STATE (Dual Storage: LocalStorage for App/Web, Embedded for USB) === */
 let appData = { lang: "en", theme: "light", auth: null, vaults: [], vaultData: {} };
-function loadAppData(){
+
+function loadAppData() {
+  // 1. Try to load from browser storage (for installed app / web visitors)
+  try {
+    const localRaw = localStorage.getItem("sentinel_app_data");
+    if(localRaw && localRaw.trim().length > 0) {
+      appData = JSON.parse(localRaw);
+      return;
+    }
+  } catch(e) { /* Ignore if localStorage is blocked */ }
+
+  // 2. Fallback to embedded data (for USB / file:// users)
   const dataEl = document.getElementById('portable-data');
   if(dataEl && dataEl.textContent.trim().length > 0){
-    try { appData = JSON.parse(dataEl.textContent); } catch(e){ appData = { lang: "en", theme: "light", auth: null, vaults: [], vaultData: {} }; }
+    try { appData = JSON.parse(dataEl.textContent); } catch(e){}
   }
+}
+
+function persistData() {
+  // Save to browser storage if available (auto-saves for app/web users)
+  try {
+    localStorage.setItem("sentinel_app_data", JSON.stringify(appData));
+  } catch(e) { /* Ignore if blocked */ }
 }
 
 function toggleTheme() {
   appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
   applyTheme();
+  persistData();
 }
 
 function applyTheme() {
@@ -548,6 +567,7 @@ async function createMasterPassword(){
   appData.auth = { salt, iterations: PBKDF2_ITERATIONS, verifierIV: verifier.iv, verifierCipher: verifier.cipher };
   appData.vaults = []; appData.vaultData = {};
   masterKey = key;
+  persistData(); // Save to device storage
   msg.className = "msg ok"; msg.textContent = "Vault created — opening Sentinel...";
   setTimeout(enterApp, 500);
 }
@@ -576,7 +596,7 @@ function armAutoLock(){ clearTimeout(autoLockTimer); autoLockTimer = setTimeout(
 
 /* === VAULT MANAGEMENT === */
 function getVaultMeta(){ return appData.vaults; }
-function saveVaultMeta(list){ appData.vaults = list; }
+function saveVaultMeta(list){ appData.vaults = list; persistData(); } // Auto-saves
 function showVaultCenter(){ document.getElementById("vaultCenter").classList.remove("hidden"); ["dashboard","vault","favorites","documents"].forEach(id => document.getElementById(id).classList.add("hidden")); renderVaultCenter(); }
 function renderVaultCenter(){
   const box = document.getElementById("vaultList"); const vaults = getVaultMeta();
@@ -591,11 +611,12 @@ async function confirmCreateVault(){
   vaults.push({ id, name, count:0, lastOpened:"Never" }); saveVaultMeta(vaults);
   const encrypted = await encryptJSON(masterKey, { items: [], docFolders: [], files: [] });
   appData.vaultData[id] = encrypted;
+  persistData(); // Save new vault data
   closeNewVaultModal(); renderVaultCenter();
   showToast(`Vault "${name}" created`, "success");
 }
 function renameVault(id){ const vaults = getVaultMeta(); const v = vaults.find(x => x.id === id); const name = prompt("Rename vault:", v.name); if(name && name.trim()){ v.name = name.trim(); saveVaultMeta(vaults); renderVaultCenter(); } }
-function deleteVault(id){ saveVaultMeta(getVaultMeta().filter(v => v.id !== id)); delete appData.vaultData[id]; renderVaultCenter(); showToast("Vault deleted", "info"); }
+function deleteVault(id){ saveVaultMeta(getVaultMeta().filter(v => v.id !== id)); delete appData.vaultData[id]; persistData(); renderVaultCenter(); showToast("Vault deleted", "info"); }
 async function openVault(id){
   const vaults = getVaultMeta(); const v = vaults.find(x => x.id === id); if(!v) return;
   const encrypted = appData.vaultData[id];
@@ -614,9 +635,10 @@ async function saveData(){
   appData.vaultData[currentVaultId] = encrypted;
   const vaults = getVaultMeta(); const v = vaults.find(x => x.id === currentVaultId);
   if(v){ v.count = credentials.length; saveVaultMeta(vaults); }
+  persistData(); // Save to device storage
 }
 
-/* === PORTABLE FILE SAVE MAGIC === */
+/* === PORTABLE FILE SAVE MAGIC (For USB / Offline File Users) === */
 function savePortableFile(){
   if(!masterKey){ showToast("Please unlock your vault before saving.", "error"); return; }
   const dataStr = JSON.stringify(appData);
@@ -918,7 +940,6 @@ document.addEventListener('keydown', function(e) {
 });
 
 /* === PWA MANIFEST INJECTION === */
-// This allows the app to be "Installed" to the home screen/app drawer
 const manifest = {
   name: "Jamil's Sentinel",
   short_name: "Sentinel",
