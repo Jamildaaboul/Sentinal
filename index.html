@@ -250,7 +250,7 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <p style="font-size:14px;color:var(--muted)" data-i18n="landingTagline">Your vault lives in one portable file — keep it on a thumb drive, open it anywhere.</p>
     <button class="wide" onclick="openVaultFile()" data-i18n="openVaultBtn">📂 Open Vault File</button>
     <button class="wide ghost" onclick="openCreateForm()" data-i18n="createVaultFileBtn">✨ Create New Vault</button>
-    <input type="file" id="openFileInput" class="hidden" accept=".sentinel,.json" onchange="handleClassicOpenFile()">
+    <input type="file" id="openFileInput" class="hidden" onchange="handleClassicOpenFile()">
     <p id="migrateLink" class="hidden footnote">
       <a href="#" onclick="startMigration();return false;" data-i18n="migrateLinkText">Migrate data from this browser →</a>
     </p>
