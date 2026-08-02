@@ -875,6 +875,9 @@ async function verifyPermission(handle){
 async function saveVaultFile(forcePickLocation){
   const text = await buildContainerText();
 
+  // Routine auto-save to an already-connected file: succeed silently, or fail cleanly.
+  // Never silently fall through to a surprise "Save As" dialog here — that could create
+  // a second, divergent file while the real one on disk never gets the update.
   if(hasFSAccess && fileHandle && !forcePickLocation){
     try{
       if(await verifyPermission(fileHandle)){
@@ -884,10 +887,17 @@ async function saveVaultFile(forcePickLocation){
         hasUnsavedChanges = false;
         updateSaveIndicator();
         return;
+      } else {
+        console.error("Write permission not granted for the connected vault file.");
       }
-    } catch(err){ console.error("Live save failed, falling back:", err); }
+    } catch(err){
+      console.error("Live auto-save failed:", err);
+    }
+    return; // leave hasUnsavedChanges = true; persist() will report this to the user
   }
 
+  // Reaches here only for: forcePickLocation === true (new vault / explicit Save As),
+  // or no live file connection exists yet at all.
   if(hasFSAccess){
     try{
       const handle = await window.showSaveFilePicker({
@@ -980,9 +990,13 @@ async function confirmSetDuress(){
   openedContainer.duressPayloadIV = decoyEnc.iv;
   openedContainer.duressPayloadCipher = decoyEnc.cipher;
 
-  await persist();
+  const saved = await persist();
   closeDuressModal();
-  toast("Duress password set. It now opens an empty decoy vault instead of this one.", "success");
+  if(saved){
+    toast("Duress password set and saved to disk. It now opens an empty decoy vault instead of this one.", "success");
+  } else {
+    toast("⚠ Duress password created but NOT yet written to disk. Click the red 'Unsaved changes' button in the sidebar now, and don't rely on this until it turns green.", "error");
+  }
 }
 
 /* ==========================================================
@@ -1032,7 +1046,41 @@ function openEmergencySheet(){
 async function persist(){
   hasUnsavedChanges = true;
   updateSaveIndicator();
-  if(hasFSAccess && fileHandle){ await saveVaultFile(false); }
+  const shouldAutoSave = hasFSAccess && fileHandle;
+  if(shouldAutoSave){
+    await saveVaultFile(false);
+    if(hasUnsavedChanges){
+      toast("⚠ Auto-save failed — this change was NOT written to your file yet. Click the red 'Unsaved changes' button in the sidebar now.", "error");
+    }
+  }
+  return !hasUnsavedChanges; // true only if the write actually completed
+}
+
+async function manualSaveClick(){
+  if(hasFSAccess && fileHandle){
+    try{
+      if(await verifyPermission(fileHandle)){
+        const text = await buildContainerText();
+        const writable = await fileHandle.createWritable();
+        await writable.write(text);
+        await writable.close();
+        hasUnsavedChanges = false;
+        updateSaveIndicator();
+        toast("💾 Saved.", "success");
+        return;
+      }
+    } catch(err){ console.error("Manual save to connected file failed:", err); }
+
+    const useNewLocation = await confirmDialog(
+      "Could not save to the original file — it may be disconnected, permission was denied, or the drive was removed.\n\nSave a new copy to a different location instead? (You'll need to manually replace your original file with this one afterward.)"
+    );
+    if(useNewLocation){
+      await saveVaultFile(true);
+      if(!hasUnsavedChanges) toast("Saved to a new location — remember to update your original file with this copy.", "info");
+    }
+    return;
+  }
+  await saveVaultFile(false);
 }
 
 function updateSaveIndicator(){
@@ -1040,7 +1088,7 @@ function updateSaveIndicator(){
   if(!el) return;
   if(hasUnsavedChanges){
     el.textContent = "● Unsaved changes — click to save";
-    el.onclick = () => saveVaultFile(false);
+    el.onclick = () => manualSaveClick();
     el.className = "save-indicator dirty";
   } else {
     el.textContent = fileHandle ? "✓ Saved" : "✓ Up to date";
