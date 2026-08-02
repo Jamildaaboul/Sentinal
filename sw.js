@@ -1,4 +1,4 @@
-const CACHE_NAME = "sentinel-cache-v1";
+const CACHE_NAME = "sentinel-cache-v2";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", (e) => {
@@ -18,8 +18,15 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-  // Cache-first for the app shell so it works offline once installed
+  // Network-first: always get the latest version when online (and refresh the cache
+  // with it), only falling back to the cached copy when there's no connection at all.
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request))
+    fetch(e.request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
