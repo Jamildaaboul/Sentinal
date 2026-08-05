@@ -1,236 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B2%3C/text%3E%3C/svg%3E">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#0b4f35">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Sentinel">
-<title>🌲 Jamil's Sentinel v7.0</title>
-<style>
-:root{
-  --forest:#0b4f35;
-  --forest-dark:#073522;
-  --sage:#8fbea5;
-  --mint:#e4f3ea;
-  --cream:#f7fbf8;
-  --gold:#c9a227;
-  --text:#173528;
-  --danger:#b3423a;
-  --warn:#c98a27;
-  --ok:#2f8f5b;
-  --bg1:#e8f5ed; --bg2:#b7d8c3;
-  --surface:#ffffff;
-  --input-bg:#ffffff;
-  --border:#cddfd3;
-  --shadow:rgba(0,0,0,.12);
-  --muted:#777;
-  --ease:cubic-bezier(.4,0,.2,1);
-}
-[data-theme="dark"]{
-  --forest:#4ade91;
-  --forest-dark:#0b4f35;
-  --sage:#5f9c7c;
-  --mint:#16332a;
-  --cream:#0f2318;
-  --gold:#e0b840;
-  --text:#e8f3ec;
-  --danger:#e0897c;
-  --warn:#e0b86a;
-  --ok:#5fd090;
-  --bg1:#0b1a12; --bg2:#122a1e;
-  --surface:#152a1f;
-  --input-bg:#1b3325;
-  --border:#2a4a38;
-  --shadow:rgba(0,0,0,.4);
-  --muted:#9db3a5;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B2%3C/text%3E%3C/svg%3E">
+    <title>🌲 Jamil's Sentinel v7.0</title>
 
-*{ box-sizing:border-box; font-family:"Segoe UI","Tahoma",Arial,sans-serif; }
+    <!-- Google Fonts: Inter for modern UI text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuGWV+w8pijtt9rbddSFx0WwbcKM5iK/sX9p/jWc9U+0F1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-body{ margin:0; background:linear-gradient(135deg,var(--bg1),var(--bg2)); color:var(--text); transition:background .3s var(--ease); }
+    <style>
+        /*
+         * Merged and Updated CSS for Jamil's Sentinel
+         * This combines your original CSS with the new aesthetic enhancements.
+         */
 
-.brand-font{ font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif; }
+        /* CSS Variables for New Palette (Centralized Color Management) */
+        :root {
+            /* New Base Colors */
+            --color-background-primary: #F8F9FA;   /* Very light grey, subtle background */
+            --color-surface-primary: #FFFFFF;     /* Pure white for panels, cards */
+            --color-text-primary: #343A40;       /* Dark grey for primary text */
+            --color-text-heading: #212529;       /* Even darker grey for headings */
+            --color-border-default: #CED4DA;     /* Light grey border */
+            --color-border-focus: #6C757D;       /* Darker grey border on focus */
+            --color-input-background: #FDFDFD;   /* Slightly off-white for inputs */
+            --color-shadow-light: rgba(0, 0, 0, 0.08); /* Subtle shadow for panels */
+            --color-shadow-medium: rgba(0, 0, 0, 0.12); /* For cards, deeper shadows */
 
-#splash{
-  position:fixed; inset:0; background:linear-gradient(135deg,var(--forest),var(--forest-dark));
-  color:white; display:flex; flex-direction:column; justify-content:center; align-items:center;
-  z-index:999; animation:fadeOut 1.8s forwards;
-}
-.logo{ font-size:80px; }
-#splash h1{ font-size:45px; margin:10px; }
-@keyframes fadeOut{ 0%,60%{ opacity:1; } 100%{ opacity:0; visibility:hidden; } }
+            /* Action/Semantic Colors (New Palette) */
+            --color-action-primary: #28A745;     /* Jamil's Green */
+            --color-action-primary-hover: #218838;
+            --color-action-secondary: #6C757D;   /* Muted grey for secondary actions */
+            --color-action-secondary-hover: #5A6268;
+            --color-action-info: #17A2B8;        /* Teal/Cyan for info actions */
+            --color-action-info-hover: #138496;
+            --color-action-warning: #FFC107;     /* Gold/Yellow for warning actions */
+            --color-action-warning-hover: #E0A800;
+            --color-action-danger: #DC3545;      /* Red for destructive actions */
+            --color-action-danger-hover: #C82333;
+            --color-success: #28A745;   /* Success messages, same as primary green */
+            --color-warning-message: #FFC107; /* Warning messages, same as warning gold */
 
-#landing, #passwordGate{ height:100vh; display:flex; justify-content:center; align-items:center; position:relative; }
-.login-card{ width:440px; max-width:92vw; background:var(--surface); padding:40px; border-radius:25px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.2); }
-.lang-toggle{
-  position:absolute; top:20px; right:20px; background:var(--surface); color:var(--forest); border:1px solid var(--forest);
-  padding:8px 14px; border-radius:20px; font-size:13px; cursor:pointer; font-weight:bold;
-}
-[dir="rtl"] .lang-toggle{ right:auto; left:20px; }
-.theme-toggle{
-  position:absolute; top:20px; right:130px; background:var(--surface); color:var(--forest); border:1px solid var(--forest);
-  padding:8px 12px; border-radius:20px; font-size:15px; cursor:pointer; line-height:1;
-}
-[dir="rtl"] .theme-toggle{ right:auto; left:130px; }
+            /* Mapped Original Variables (using new palette where applicable) */
+            --bg1: var(--color-background-primary); /* Original gradient start */
+            --bg2: var(--color-background-primary); /* Original gradient end */
+            --forest: var(--color-action-primary);
+            --forest-dark: var(--color-action-primary-hover);
+            --sage: #8fbea5; /* Keeping original sage if it has a specific use outside primary green */
+            --gold: var(--color-action-warning); /* Original gold for hover, now mapped */
+            --mint: #E9F4ED; /* A very light green, distinct from primary green for backgrounds */
+            --danger: var(--color-action-danger);
+            --ok: var(--color-success);
+            --warn: var(--color-warning-message);
+            --border: var(--color-border-default);
+            --input-bg: var(--color-input-background);
+            --text: var(--color-text-primary);
+            --surface: var(--color-surface-primary);
+            --muted: #6C757D; /* Muted grey text */
+            --shadow: var(--color-shadow-light); /* Default shadow */
 
-input, select, textarea{ width:100%; padding:14px; margin:8px 0; border-radius:12px; border:1px solid var(--border); font-size:16px; background:var(--input-bg); color:var(--text); transition:border-color .2s var(--ease); }
+            /* Animation ease for smoother transitions */
+            --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
 
-button{ background:var(--forest); color:white; border:none; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:bold; margin:4px 4px 4px 0; transition:background .15s var(--ease), transform .1s var(--ease), box-shadow .15s var(--ease); }
-button:hover{ background:var(--gold); box-shadow:0 4px 12px var(--shadow); }
-button:active{ transform:scale(.97); }
-button.danger{ background:var(--danger); }
-button.danger:hover{ background:#8f2f29; }
-button.ghost{ background:transparent; color:var(--forest); border:1px solid var(--forest); }
-button.ghost:hover{ background:var(--mint); color:var(--forest); }
-button.wide{ width:100%; text-align:center; }
-button:disabled{ opacity:.5; cursor:not-allowed; }
+        /* General Resets & Typography */
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif; /* Use Inter for everything */
+        }
 
-.msg{ font-size:14px; min-height:20px; }
-.msg.error{ color:var(--danger); font-weight:bold; }
-.msg.ok{ color:var(--ok); font-weight:bold; }
+        body {
+            margin: 0;
+            /* Removed original background gradient. Using solid color from new palette for consistency. */
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            /* IMPORTANT: These were the lines causing the layout issue. They are removed from body. */
+            /* display: flex; */
+            /* justify-content: center; */
+            /* align-items: flex-start; */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scrollbars */
+            padding: 20px; /* Overall page padding around content */
+        }
 
-#app{ display:none; }
-.sidebar{ position:fixed; left:0; top:0; bottom:0; width:260px; background:var(--surface); padding:25px; box-shadow:5px 0 25px var(--shadow); overflow-y:auto; }
-[dir="rtl"] .sidebar{ left:auto; right:0; box-shadow:-5px 0 25px var(--shadow); }
-.brand{ font-size:22px; font-weight:bold; color:var(--forest); margin-bottom:6px; }
-.brand, .login-card h1, #splash h1{ font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif; letter-spacing:.2px; }
-#currentVaultLabel{ font-size:12px; color:var(--muted); margin:0 0 12px; word-break:break-word; }
-.save-indicator{ font-size:12px; padding:8px 12px; border-radius:10px; margin-bottom:16px; cursor:default; transition:background .2s var(--ease), color .2s var(--ease); }
-.save-indicator.clean{ background:var(--mint); color:var(--ok); }
-.save-indicator.dirty{ background:var(--mint); color:var(--danger); cursor:pointer; font-weight:bold; }
-.menu{ padding:14px; margin:8px 0; border-radius:12px; cursor:pointer; border-left:3px solid transparent; transition:background .15s var(--ease), border-color .15s var(--ease); }
-[dir="rtl"] .menu{ border-left:none; border-right:3px solid transparent; }
-.menu:hover{ background:var(--mint); }
-.menu.active{ background:var(--mint); font-weight:bold; border-left-color:var(--forest); }
-[dir="rtl"] .menu.active{ border-right-color:var(--forest); }
-.main{ margin-left:260px; padding:30px; max-width:1100px; }
-[dir="rtl"] .main{ margin-left:0; margin-right:260px; }
+        /* Headings - New Styling */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--color-text-heading);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif; /* Ensure headings also use Inter */
+        }
+        h1 { font-size: 2.2rem; font-weight: 600; }
+        h2 { font-size: 1.8rem; font-weight: 600; }
+        h3 { font-size: 1.5rem; font-weight: 500; }
 
-.hamburger-btn{
-  display:none; position:fixed; top:16px; left:16px; z-index:1100;
-  background:var(--forest); color:white; border:none; width:44px; height:44px;
-  border-radius:12px; font-size:20px; cursor:pointer; box-shadow:0 4px 12px var(--shadow);
-}
-[dir="rtl"] .hamburger-btn{ left:auto; right:16px; }
-.sidebar-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1040; }
-.sidebar-overlay.show{ display:block; }
+        /* Brand Font - Original, for specific elements if needed to retain classic look */
+        .brand-font { font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif; }
+        /* Override specific brand elements to Inter for consistency if desired, or keep Georgia */
+        .brand, .login-card h1, #splash h1 { font-family:'Inter', sans-serif; letter-spacing:.2px; }
 
-@media (max-width: 768px){
-  .hamburger-btn{ display:block; }
-  .sidebar{
-    width:82vw; max-width:300px; z-index:1050;
-    transform:translateX(-100%);
-    transition:transform .25s var(--ease);
-  }
-  [dir="rtl"] .sidebar{ transform:translateX(100%); }
-  .sidebar.sidebar-open{ transform:translateX(0); }
-  .main{ margin-left:0 !important; margin-right:0 !important; padding:20px; padding-top:72px; }
-  .stat-grid{ grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); }
-  .modal-box{ width:92vw; }
-}
+        /* Input, Select, Textarea - Merged & New Styling */
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px; /* Adopted your original padding for inputs */
+            margin: 8px 0;
+            border: 1px solid var(--color-border-default);
+            border-radius: 8px; /* Slightly rounded input fields */
+            font-size: 16px; /* Adopted your original font size for inputs */
+            color: var(--color-text-primary);
+            background: var(--color-input-background);
+            transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+            box-sizing: border-box;
+        }
 
-@keyframes pageFadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
-.page-fade-in{ animation:pageFadeIn .25s var(--ease); }
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25); /* Subtle focus glow */
+            outline: none;
+        }
 
-@keyframes modalPop{ from{ opacity:0; transform:scale(.96); } to{ opacity:1; transform:scale(1); } }
-.modal-box{ animation:modalPop .18s var(--ease); }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500; /* Slightly bolder labels */
+            color: var(--color-text-primary);
+        }
 
-#toastContainer{ position:fixed; bottom:20px; right:20px; z-index:2000; display:flex; flex-direction:column; gap:8px; }
-[dir="rtl"] #toastContainer{ right:auto; left:20px; }
-.toast{
-  background:var(--surface); color:var(--text); padding:12px 18px; border-radius:12px; box-shadow:0 8px 24px var(--shadow);
-  font-size:14px; opacity:0; transform:translateY(10px); transition:opacity .25s var(--ease), transform .25s var(--ease);
-  border-left:4px solid var(--forest); max-width:320px;
-}
-[dir="rtl"] .toast{ border-left:none; border-right:4px solid var(--forest); }
-.toast.show{ opacity:1; transform:translateY(0); }
-.toast.toast-success{ border-left-color:var(--ok); }
-.toast.toast-error{ border-left-color:var(--danger); }
-[dir="rtl"] .toast.toast-success{ border-right-color:var(--ok); }
-[dir="rtl"] .toast.toast-error{ border-right-color:var(--danger); }
+        /* Buttons - Merged & New Styling */
+        button, .button { /* Apply base styling to both <button> tag and .button class */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px; /* Consistent button rounding */
+            transition: all 0.2s var(--ease);
+            text-decoration: none;
+            margin: 4px; /* General margin for buttons */
+        }
 
-.card{ background:var(--surface); padding:18px 20px; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.12); margin-bottom:14px; }
-.card h1{ margin:0 0 6px; font-size:22px; }
-.card > p:first-of-type{ margin-top:0; }
+        /* New Semantic Button Classes - Use these in your HTML (e.g., <button class="btn-primary">) */
+        .btn-primary { /* Primary action: Save, Create, Add */
+            background-color: var(--color-action-primary);
+            color: #FFFFFF;
+        }
+        .btn-primary:hover {
+            background-color: var(--color-action-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.vault-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
-.hidden{ display:none !important; }
+        .btn-secondary { /* Secondary actions, or neutral buttons */
+            background-color: var(--color-action-secondary);
+            color: #FFFFFF;
+        }
+        .btn-secondary:hover {
+            background-color: var(--color-action-secondary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.stat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
-.stat{ background:var(--surface); padding:12px; border-radius:16px; text-align:center; box-shadow:0 8px 25px rgba(0,0,0,.12); }
-.stat h3{ margin:0 0 4px; font-size:13px; }
-.stat h1{ color:var(--forest); margin:0; font-size:24px; }
-.stat h2{ margin:0; font-size:15px; }
+        .btn-info { /* Information-related actions: Show, Copy */
+            background-color: var(--color-action-info);
+            color: #FFFFFF;
+        }
+        .btn-info:hover {
+            background-color: var(--color-action-info-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.modal{ position:fixed; inset:0; background:rgba(0,0,0,.4); display:flex; justify-content:center; align-items:center; z-index:1000; }
-.modal-box{ background:var(--surface); width:460px; max-width:92vw; padding:30px; border-radius:25px; max-height:88vh; display:flex; flex-direction:column; }
-.modal-scroll{ overflow-y:auto; flex:1 1 auto; padding-right:4px; }
-.modal-footer{ flex-shrink:0; padding-top:12px; }
+        .btn-warning { /* Warning actions: like Favorite (if it's a "highlight" type warning) */
+            background-color: var(--color-action-warning);
+            color: var(--color-text-heading); /* Dark text for contrast */
+        }
+        .btn-warning:hover {
+            background-color: var(--color-action-warning-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.strength-bar{ height:8px; border-radius:6px; background:var(--border); margin:6px 0 2px; overflow:hidden; }
-.strength-fill{ height:100%; width:0%; transition:.2s; border-radius:6px; }
-.strength-label{ font-size:12px; color:var(--muted); }
+        .btn-danger { /* Destructive actions: Delete, Cancel */
+            background-color: var(--color-action-danger);
+            color: #FFFFFF;
+        }
+        .btn-danger:hover {
+            background-color: var(--color-action-danger-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.field-row{ display:flex; gap:8px; align-items:center; }
-.field-row input{ flex:1; }
-.field-row button{ padding:12px 14px; margin:8px 0; }
+        /* Original Button Classes (mapped to new palette and integrated) */
+        /* Note: Your HTML buttons need to use these class names now for styling */
+        button.danger, .button.danger { /* Original danger button class */
+            background: var(--danger);
+        }
+        button.danger:hover, .button.danger:hover {
+            background: var(--color-action-danger-hover); /* Use new hover color */
+        }
 
-.guardian-panel{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
-.guardian-tree{ font-size:48px; line-height:1; transition:transform .3s var(--ease); display:inline-block; }
-@keyframes treeGrow{ 0%{ transform:scale(1); } 40%{ transform:scale(1.25) rotate(-4deg); } 70%{ transform:scale(.95) rotate(2deg); } 100%{ transform:scale(1); } }
-.guardian-tree.grow-pulse{ animation:treeGrow .6s var(--ease); }
-.guardian-score-num{ font-size:28px; font-weight:bold; color:var(--forest); }
-.guardian-breakdown{ flex:1; min-width:220px; }
-.guardian-row{ display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:14px; }
-.guardian-row span.count{ font-weight:bold; }
-.guardian-row.ok span.count{ color:var(--ok); }
-.guardian-row.warn span.count{ color:var(--warn); }
-.guardian-row.bad span.count{ color:var(--danger); }
+        button.ghost, .button.ghost {
+            background: transparent;
+            color: var(--forest);
+            border: 1px solid var(--forest);
+        }
+        button.ghost:hover, .button.ghost:hover {
+            background: var(--mint);
+            color: var(--forest);
+        }
 
-.totp-box{ background:var(--mint); border-radius:14px; padding:14px; margin:10px 0; display:flex; justify-content:space-between; align-items:center; }
-.totp-code{ font-size:26px; font-weight:bold; letter-spacing:3px; color:var(--forest); }
-.totp-timer{ font-size:12px; color:var(--muted); }
+        button.wide, .button.wide { width:100%; text-align:center; }
+        button:disabled, .button:disabled { opacity:.5; cursor:not-allowed; }
 
-.breadcrumb{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin:10px 0; font-size:14px; }
-.breadcrumb .crumb{ cursor:pointer; color:var(--forest); font-weight:bold; }
-.breadcrumb .crumb:hover{ text-decoration:underline; }
-.breadcrumb .sep{ color:var(--muted); }
-.subfolder-grid{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
-.subfolder-chip{ background:var(--mint); border-radius:14px; padding:10px 16px; cursor:pointer; display:flex; align-items:center; gap:8px; font-size:14px; transition:transform .15s var(--ease), background .15s var(--ease); }
-.subfolder-chip:hover{ background:var(--sage); color:white; transform:translateY(-2px); }
-.subfolder-chip .sf-actions{ display:flex; gap:4px; font-size:12px; }
+        /* Button Icons */
+        button i, .button i {
+            margin-right: 8px; /* Space between icon and text */
+        }
 
-.credential-list{ display:flex; flex-direction:column; gap:8px; }
-.credential-row{
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:var(--surface); border-radius:12px; padding:10px 16px; box-shadow:0 2px 8px var(--shadow);
-  cursor:pointer; border-left:4px solid var(--forest); transition:transform .15s var(--ease), background .15s var(--ease), box-shadow .15s var(--ease);
-}
-[dir="rtl"] .credential-row{ border-left:none; border-right:4px solid var(--forest); }
-.credential-row:hover{ background:var(--mint); transform:translateY(-2px); box-shadow:0 6px 16px var(--shadow); }
-.cr-main{ display:flex; align-items:center; gap:10px; min-width:0; }
-.cr-icon{ font-size:18px; flex-shrink:0; }
-.cr-text{ min-width:0; }
-.cr-title{ font-weight:bold; font-size:14px; color:var(--forest); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.cr-sub{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.cr-badges{ display:flex; gap:6px; flex-shrink:0; align-items:center; }
-.cr-badges .vault-badge{ font-size:11px; padding:3px 9px; margin:0; }
-.vault-badge{ display:inline-block; padding:6px 12px; background:var(--mint); border-radius:20px; font-size:13px; }
-.row-copy-btn{
-  background:transparent; color:var(--forest); border:none; padding:4px 6px; margin:0; font-size:14px;
-  opacity:0; transition:opacity .15s var(--ease); cursor:pointer;
-}
-.credential-row:hover .row-copy-btn{ opacity:1; }
-.row-copy-btn:hover{ background:var(--sage); color:white; border-radius:6px; }
-.row-copy-btn:active{ transform:scale(.9); }
+        /* Separators - New Styling */
+        hr {
+            border: none;
+            border-top: 1px solid #E9ECEF; /* Light, subtle horizontal rule */
+            margin: 30px 0; /* More spacing around separators */
+        }
 
-.footnote{ font-size:12px; color:var(--muted); text-align:center; margin-top:18px; }
-</style>
+        /* Original Structural and Component CSS - Adjusted for new palette/styles */
+
+        #splash {
+            position:fixed; inset:0;
+            /* Using original gradient, mapped to new color variables */
+            background:linear-gradient(135deg,var(--forest),var(--forest-dark));
+            color:white; display:flex; flex-direction:column; justify-content:center; align-items:center;
+            z-index:999; animation:fadeOut 1.8s forwards;
+        }
+        .logo { font-size:80px; }
+        #splash h1 { font-size:45px; margin:10px; }
+        @keyframes fadeOut { 0%,60%{ opacity:1; } 100%{ opacity:0; visibility:hidden; } }
+
+        #landing, #passwordGate {
+            height:100vh;
+            display:flex; justify-content:center; align-items:center; /* Apply flexbox here for centering */
+            position:relative;
+        }
+
+        /* Login Card - Merged with new card styling */
+        .login-card {
+            width:440px; max-width:92vw;
+            background:var(--color-surface-primary); /* Use new surface color */
+            padding:40px;
+            border-radius:18px; /* Adjusted to match new general card radius */
+            text-align:center;
+            box-shadow:0 10px 30px var(--color-shadow-medium); /* Use new shadow variable */
+        }
+        /* Lang and Theme Toggles in login-card */
+        .lang-toggle {
+            position:absolute; top:20px; right:20px;
+            background:var(--color-surface-primary);
+            color:var(--forest);
+            border:1px solid var(--forest);
+            padding:8px 14px; border-radius:20px; font-size:13px; cursor:pointer; font-weight:bold;
+        }
+        [dir="rtl"] .lang-toggle { right:auto; left:20px; }
+        .theme-toggle {
+            position:absolute; top:20px; right:130px;
+            background:var(--color-surface-primary);
+            color:var(--forest);
+            border:1px solid var(--forest);
+            padding:8px 12px; border-radius:20px; font-size:15px; cursor:pointer; line-height:1;
+        }
+        [dir="rtl"] .theme-toggle { right:auto; left:130px; }
+
+        .msg { font-size:14px; min-height:20px; }
+        .msg.error { color:var(--danger); font-weight:bold; }
+        .msg.ok { color:var(--ok); font-weight:bold; }
+
+        #app { display:none; } /* Will be controlled by JS */
+
+        .sidebar {
+            position:fixed; left:0; top:0; bottom:0; width:260px;
+            background:var(--color-surface-primary);
+            padding:25px;
+            box-shadow:5px 0 25px var(--color-shadow-light); /* Use new shadow variable */
+            overflow-y:auto;
+        }
+        [dir="rtl"] .sidebar { left:auto; right:0; box-shadow:-5px 0 25px var(--color-shadow-light); }
+
+        /* Lang and Theme Toggles in sidebar */
+        .sidebar .lang-toggle, .sidebar .theme-toggle {
+            position:static; /* Override absolute positioning for sidebar */
+            margin: 0 4px; /* Add some margin */
+            flex: none; /* Disable flex-grow */
+        }
+        .sidebar .lang-toggle { flex:1; } /* Allow lang toggle to grow within its container */
+
+
+        #currentVaultLabel { font-size:12px; color:var(--muted); margin:0 0 12px; word-break:break-word; }
+        .save-indicator {
+            font-size:12px; padding:8px 12px; border-radius:10px; margin-bottom:16px; cursor:default;
+            transition:background .2s var(--ease), color .2s var(--ease);
+        }
+        .save-indicator.clean { background:var(--mint); color:var(--ok); }
+        .save-indicator.dirty { background:var(--mint); color:var(--danger); cursor:pointer; font-weight:bold; }
+
+        .menu {
+            padding:14px; margin:8px 0; border-radius:12px; cursor:pointer;
+            border-left:3px solid transparent; transition:background .15s var(--ease), border-color .15s var(--ease);
+        }
+        [dir="rtl"] .menu { border-left:none; border-right:3px solid transparent; }
+        .menu:hover { background:var(--mint); }
+        .menu.active { background:var(--mint); font-weight:bold; border-left-color:var(--forest); }
+        [dir="rtl"] .menu.active { border-right-color:var(--forest); }
+
+        .main {
+            margin-left:260px; padding:30px; max-width:1100px;
+            margin-right: auto; /* Center the main content area */
+        }
+        [dir="rtl"] .main { margin-left:0; margin-right:260px; }
+
+        @keyframes pageFadeIn { from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+        .page-fade-in { animation:pageFadeIn .25s var(--ease); }
+
+        @keyframes modalPop { from{ opacity:0; transform:scale(.96); } to{ opacity:1; transform:scale(1); } }
+
+        /* Modal Box - Merged with new panel styling */
+        .modal-box {
+            animation:modalPop .18s var(--ease);
+            background:var(--color-surface-primary);
+            width:460px; max-width:92vw;
+            padding:30px;
+            border-radius:18px; /* Adjusted to match new general card radius */
+            max-height:88vh; display:flex; flex-direction:column;
+            box-shadow:0 10px 30px var(--color-shadow-medium); /* Use new shadow variable */
+        }
+        .modal-scroll { overflow-y:auto; flex:1 1 auto; padding-right:4px; }
+        .modal-footer { flex-shrink:0; padding-top:12px; }
+        .modal { /* Your original modal styling */
+            position:fixed; inset:0; background:rgba(0,0,0,.4);
+            display:flex; justify-content:center; align-items:center; z-index:1000;
+        }
+
+        #toastContainer {
+            position:fixed; bottom:20px; right:20px; z-index:2000;
+            display:flex; flex-direction:column; gap:8px;
+        }
+        [dir="rtl"] #toastContainer { right:auto; left:20px; }
+        .toast {
+            background:var(--color-surface-primary);
+            color:var(--color-text-primary);
+            padding:12px 18px; border-radius:12px;
+            box-shadow:0 8px 24px var(--color-shadow-light); /* Use new shadow variable */
+            font-size:14px; opacity:0; transform:translateY(10px);
+            transition:opacity .25s var(--ease), transform .25s var(--ease);
+            border-left:4px solid var(--forest); max-width:320px;
+        }
+        [dir="rtl"] .toast { border-left:none; border-right:4px solid var(--forest); }
+        .toast.show { opacity:1; transform:translateY(0); }
+        .toast.toast-success { border-left-color:var(--ok); }
+        .toast.toast-error { border-left-color:var(--danger); }
+        [dir="rtl"] .toast.toast-success { border-right-color:var(--ok); }
+        [dir="rtl"] .toast.toast-error { border-right-color:var(--danger); }
+
+        /* General Card Styling */
+        .card {
+            background:var(--color-surface-primary);
+            padding:18px 20px;
+            border-radius:18px;
+            box-shadow:0 10px 30px var(--color-shadow-medium); /* Slightly deeper shadow for cards */
+            margin-bottom:14px;
+        }
+        .card h1 { margin:0 0 6px; font-size:22px; }
+        .card > p:first-of-type { margin-top:0; }
+
+        .vault-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+        .hidden { display:none !important; }
+
+        .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+        .stat {
+            background:var(--color-surface-primary);
+            padding:12px; border-radius:16px; text-align:center;
+            box-shadow:0 8px 25px var(--color-shadow-light); /* Use new shadow variable */
+        }
+        .stat h3 { margin:0 0 4px; font-size:13px; }
+        .stat h1 { color:var(--forest); margin:0; font-size:24px; }
+        .stat h2 { margin:0; font-size:15px; }
+
+        .strength-bar { height:8px; border-radius:6px; background:var(--border); margin:6px 0 2px; overflow:hidden; }
+        .strength-fill { height:100%; width:0%; transition:.2s; border-radius:6px; }
+        .strength-label { font-size:12px; color:var(--muted); }
+
+        /* Field Row - Merged & New Styling */
+        .field-row {
+            display:flex;
+            gap:10px; /* Slightly increased gap for better spacing */
+            align-items:center;
+            margin-bottom: 15px; /* Added margin for better vertical separation */
+        }
+        .field-row input, .field-row select {
+            flex:1;
+            margin-bottom: 0; /* Clear margin bottom from general input rules */
+        }
+        .field-row button {
+            padding:12px 14px;
+            margin:0; /* Clear margin from general button rules */
+        }
+
+        /* Custom Field Row - Merged & New Styling */
+        .custom-field-row {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+        }
+        .custom-field-row input[type="text"],
+        .custom-field-row input[type="password"],
+        .custom-field-row select {
+            flex: 1; width: auto; margin: 0;
+        }
+        .custom-field-row button {
+            padding: 8px 10px; margin: 0; white-space: nowrap;
+        }
+
+        .guardian-panel { display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+        .guardian-tree { font-size:48px; line-height:1; transition:transform .3s var(--ease); display:inline-block; }
+        @keyframes treeGrow {
+            0%{ transform:scale(1); } 40%{ transform:scale(1.25) rotate(-4deg); }
+            70%{ transform:scale(.95) rotate(2deg); } 100%{ transform:scale(1); }
+        }
+        .guardian-tree.grow-pulse { animation:treeGrow .6s var(--ease); }
+        .guardian-score-num { font-size:28px; font-weight:bold; color:var(--forest); }
+        .guardian-breakdown { flex:1; min-width:220px; }
+        .guardian-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:14px; }
+        .guardian-row span.count { font-weight:bold; }
+        .guardian-row.ok span.count { color:var(--ok); }
+        .guardian-row.warn span.count { color:var(--warn); }
+        .guardian-row.bad span.count { color:var(--danger); }
+
+        .totp-box {
+            background:var(--mint); border-radius:14px; padding:14px; margin:10px 0;
+            display:flex; justify-content:space-between; align-items:center;
+        }
+        .totp-code { font-size:26px; font-weight:bold; letter-spacing:3px; color:var(--forest); }
+        .totp-timer { font-size:12px; color:var(--muted); }
+
+        .breadcrumb { display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin:10px 0; font-size:14px; }
+        .breadcrumb .crumb { cursor:pointer; color:var(--forest); font-weight:bold; }
+        .breadcrumb .crumb:hover { text-decoration:underline; }
+        .breadcrumb .sep { color:var(--muted); }
+        .subfolder-grid { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+        .subfolder-chip {
+            background:var(--mint); border-radius:14px; padding:10px 16px; cursor:pointer;
+            display:flex; align-items:center; gap:8px; font-size:14px;
+            transition:transform .15s var(--ease), background .15s var(--ease);
+        }
+        .subfolder-chip:hover { background:var(--sage); color:white; transform:translateY(-2px); }
+        .subfolder-chip .sf-actions { display:flex; gap:4px; font-size:12px; }
+
+        .credential-list { display:flex; flex-direction:column; gap:8px; }
+        .credential-row {
+            display:flex; align-items:center; justify-content:space-between; gap:12px;
+            background:var(--color-surface-primary); /* Use new surface color */
+            border-radius:12px; padding:10px 16px;
+            box-shadow:0 2px 8px var(--color-shadow-light); /* Use new shadow variable */
+            cursor:pointer; border-left:4px solid var(--forest);
+            transition:transform .15s var(--ease), background .15s var(--ease), box-shadow .15s var(--ease);
+        }
+        [dir="rtl"] .credential-row { border-left:none; border-right:4px solid var(--forest); }
+        .credential-row:hover { background:var(--mint); transform:translateY(-2px); box-shadow:0 6px 16px var(--color-shadow-medium); }
+        .cr-main { display:flex; align-items:center; gap:10px; min-width:0; }
+        .cr-icon { font-size:18px; flex-shrink:0; }
+        .cr-text { min-width:0; }
+        .cr-title { font-weight:bold; font-size:14px; color:var(--forest); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .cr-sub { font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .cr-badges { display:flex; gap:6px; flex-shrink:0; align-items:center; }
+        .cr-badges .vault-badge { font-size:11px; padding:3px 9px; margin:0; } /* specificity, this smaller one will apply for .cr-badges .vault-badge */
+        .vault-badge { display:inline-block; padding:6px 12px; background:var(--mint); border-radius:20px; font-size:13px; }
+
+        .row-copy-btn {
+            background:transparent; color:var(--forest); border:none; padding:4px 6px; margin:0; font-size:14px;
+            opacity:0; transition:opacity .15s var(--ease); cursor:pointer;
+        }
+        .credential-row:hover .row-copy-btn { opacity:1; }
+        .row-copy-btn:hover { background:var(--sage); color:white; border-radius:6px; }
+        .row-copy-btn:active { transform:scale(.9); }
+
+        .footnote { font-size:12px; color:var(--muted); text-align:center; margin-top:18px; }
+    </style>
 </head>
 <body>
 
@@ -248,9 +514,10 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <div class="logo">🌲</div>
     <h1 data-i18n="appName">Jamil's Sentinel</h1>
     <p style="font-size:14px;color:var(--muted)" data-i18n="landingTagline">Your vault lives in one portable file — keep it on a thumb drive, open it anywhere.</p>
-    <button class="wide" onclick="openVaultFile()" data-i18n="openVaultBtn">📂 Open Vault File</button>
-    <button class="wide ghost" onclick="openCreateForm()" data-i18n="createVaultFileBtn">✨ Create New Vault</button>
-    <input type="file" id="openFileInput" class="hidden" onchange="handleClassicOpenFile()">
+    <!-- Buttons updated to use new semantic classes -->
+    <button class="button btn-primary wide" onclick="openVaultFile()" data-i18n="openVaultBtn">📂 Open Vault File</button>
+    <button class="button btn-info wide ghost" onclick="openCreateForm()" data-i18n="createVaultFileBtn">✨ Create New Vault</button>
+    <input type="file" id="openFileInput" class="hidden" accept=".sentinel,.json" onchange="handleClassicOpenFile()">
     <p id="migrateLink" class="hidden footnote">
       <a href="#" onclick="startMigration();return false;" data-i18n="migrateLinkText">Migrate data from this browser →</a>
     </p>
@@ -271,20 +538,20 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <div id="gateConfirmRow" class="hidden">
       <input id="gateConfirmPassword" type="password" placeholder="Confirm Master Password">
     </div>
-    <button id="gateSubmitBtn" class="wide" onclick="gateSubmit()">Continue</button>
-    <button class="wide ghost" onclick="cancelGate()" data-i18n="cancelBtn">Cancel</button>
+    <!-- Buttons updated to use new semantic classes -->
+    <button id="gateSubmitBtn" class="button btn-primary wide" onclick="gateSubmit()">Continue</button>
+    <button class="button btn-secondary wide ghost" onclick="cancelGate()" data-i18n="cancelBtn">Cancel</button>
   </div>
 </div>
 
 <div id="app">
-  <button class="hamburger-btn" onclick="toggleSidebar()" id="hamburgerBtn">☰</button>
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-  <div class="sidebar" id="sidebarEl">
+  <div class="sidebar">
     <div class="brand">🌲 <span data-i18n="appName">Jamil's Sentinel</span></div>
     <p id="currentVaultLabel"></p>
     <div style="display:flex;gap:8px;margin-bottom:15px;">
-      <button class="lang-toggle" style="position:static;flex:1;" onclick="toggleLang()" id="langToggleBtn2">العربية</button>
-      <button class="theme-toggle" style="position:static;" onclick="toggleTheme()" id="themeToggleBtn2">🌙</button>
+      <!-- Removed inline styles, now managed by CSS .sidebar .lang-toggle, .sidebar .theme-toggle -->
+      <button class="lang-toggle" onclick="toggleLang()" id="langToggleBtn2">العربية</button>
+      <button class="theme-toggle" onclick="toggleTheme()" id="themeToggleBtn2">🌙</button>
     </div>
     <div id="saveIndicator" class="save-indicator clean">✓ Up to date</div>
     <div class="menu" data-page="dashboard" onclick="showPage('dashboard')" data-i18n="navDashboard">📊 Dashboard</div>
@@ -292,8 +559,6 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <div class="menu" data-page="favorites" onclick="showPage('favorites')" data-i18n="navFavorites">⭐ Favorites</div>
     <div class="menu" data-page="documents" onclick="showPage('documents')" data-i18n="navDocuments">📁 Documents</div>
     <div class="menu" onclick="saveAsCopy()" data-i18n="navBackupCopy">📦 Backup Copy</div>
-    <div class="menu" onclick="openEmergencySheet()" data-i18n="navEmergencySheet">🖨 Emergency Sheet</div>
-    <div class="menu" id="duressMenuItem" onclick="openDuressModal()" data-i18n="navDuress">🕵 Set Duress Password</div>
     <div class="menu" onclick="lockVault()" data-i18n="navLock">🔒 Lock Vault</div>
   </div>
 
@@ -314,7 +579,6 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
         <div class="stat"><h3 data-i18n="statCategories">📁 Categories</h3><h1 id="categoryCount">0</h1></div>
         <div class="stat"><h3 data-i18n="statLatest">🕒 Latest Entry</h3><h2 id="latestEntry">None</h2></div>
         <div class="stat"><h3 data-i18n="statDocuments">📁 Documents</h3><h1 id="documentCount">0</h1></div>
-        <div class="stat"><h3 data-i18n="statBackup">📦 Last Backup</h3><h2 id="lastBackupDisplay">Never</h2></div>
       </div>
     </div>
 
@@ -329,7 +593,8 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
         <h2 data-i18n="detailsTitle">Item Details</h2>
         <div id="credentialDetails"><p data-i18n="detailsEmpty">Select an item to view details.</p></div>
       </div>
-      <button onclick="openAddCredential()" data-i18n="addBtn">➕ Add Item</button>
+      <!-- Button updated to use new semantic class -->
+      <button class="button btn-primary" onclick="openAddCredential()" data-i18n="addBtn">➕ Add Item</button>
     </div>
 
     <div id="favorites" class="hidden">
@@ -345,13 +610,15 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
         <p style="font-size:13px;color:var(--muted)" data-i18n="docsSub">Encrypted storage for a handful of sensitive files — IDs, contracts, insurance papers. Not meant for large photo libraries.</p>
         <div id="docBreadcrumb" class="breadcrumb"></div>
         <div id="subfolderGrid" class="subfolder-grid"></div>
-        <button class="ghost" onclick="openNewFolderModal()" data-i18n="newFolderBtn">📁 New Folder</button>
+        <!-- Button updated to use new semantic class -->
+        <button class="button btn-secondary ghost" onclick="openNewFolderModal()" data-i18n="newFolderBtn">📁 New Folder</button>
       </div>
       <div class="card">
         <div id="documentList" class="credential-list"></div>
         <br>
         <input type="file" id="docFileInput" class="hidden" multiple onchange="handleDocFileSelect()">
-        <button onclick="document.getElementById('docFileInput').click()" data-i18n="addDocBtn">➕ Add Document</button>
+        <!-- Button updated to use new semantic class -->
+        <button class="button btn-primary" onclick="document.getElementById('docFileInput').click()" data-i18n="addDocBtn">➕ Add Document</button>
       </div>
     </div>
 
@@ -374,7 +641,8 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
       <input id="newIdentifier" data-i18n-ph="usernamePh" placeholder="Username">
       <div class="field-row" id="secretRow">
         <input id="newSecret" data-i18n-ph="passwordPh" placeholder="Password" type="password" oninput="updateStrengthMeter()">
-        <button type="button" class="ghost" onclick="generatePassword()">🎲</button>
+        <!-- Button updated to use new semantic class -->
+        <button type="button" class="button btn-secondary ghost" onclick="generatePassword()">🎲</button>
       </div>
       <div class="strength-bar" id="modalStrengthBar"><div class="strength-fill" id="modalStrengthFill"></div></div>
       <p class="strength-label" id="modalStrengthLabel">&nbsp;</p>
@@ -384,10 +652,22 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
         <option>Personal</option><option>Work</option><option>Finance</option><option>Shopping</option>
       </select>
       <textarea id="newNotes" data-i18n-ph="notesPh" placeholder="Notes"></textarea>
+
+      <!-- ** NEW for Custom Fields ** -->
+      <hr style="margin: 20px 0; border-color: var(--border);">
+      <h3 style="margin:0 0 10px;">Custom Fields</h3>
+      <div id="customFieldsContainer">
+        <!-- Custom fields will be appended here -->
+      </div>
+      <!-- Button updated to use new semantic class -->
+      <button type="button" class="button btn-secondary ghost" onclick="addCustomField()">➕ Add Custom Field</button>
+      <!-- ** End NEW for Custom Fields ** -->
+
     </div>
     <div class="modal-footer">
-      <button onclick="saveCredential()" data-i18n="saveBtn">💾 Save</button>
-      <button class="ghost" onclick="closeCredentialModal()" data-i18n="cancelBtn">Cancel</button>
+      <!-- Buttons updated to use new semantic classes -->
+      <button class="button btn-primary" onclick="saveCredential()" data-i18n="saveBtn">💾 Save</button>
+      <button class="button btn-secondary ghost" onclick="closeCredentialModal()" data-i18n="cancelBtn">Cancel</button>
     </div>
   </div>
 </div>
@@ -398,8 +678,9 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <h2 id="newFolderModalTitle">📁 New Folder</h2>
     <input id="newFolderName" placeholder="Folder Name" onkeydown="if(event.key==='Enter'){confirmFolderModal();}">
     <br><br>
-    <button onclick="confirmFolderModal()" data-i18n="createBtn">✅ Create</button>
-    <button class="ghost" onclick="closeNewFolderModal()" data-i18n="cancelBtn">Cancel</button>
+    <!-- Buttons updated to use new semantic classes -->
+    <button class="button btn-primary" onclick="confirmFolderModal()" data-i18n="createBtn">✅ Create</button>
+    <button class="button btn-secondary ghost" onclick="closeNewFolderModal()" data-i18n="cancelBtn">Cancel</button>
   </div>
 </div>
 
@@ -409,7 +690,8 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <h2 id="docModalTitle">📄 Document</h2>
     <div id="docModalBody" class="modal-scroll"></div>
     <div class="modal-footer">
-      <button class="ghost" onclick="closeDocumentModal()" data-i18n="cancelBtn">Cancel</button>
+      <!-- Buttons updated to use new semantic classes -->
+      <button class="button btn-secondary ghost" onclick="closeDocumentModal()" data-i18n="cancelBtn">Cancel</button>
     </div>
   </div>
 </div>
@@ -425,28 +707,13 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
         <hr>
         <p>Migrating: <strong id="migrationSelectedName"></strong></p>
         <input id="migratePassword" type="password" placeholder="That vault's OLD master password">
-        <button onclick="confirmMigration()">➡ Migrate</button>
+        <!-- Buttons updated to use new semantic classes -->
+        <button class="button btn-primary" onclick="confirmMigration()">➡ Migrate</button>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="ghost" onclick="closeMigrationModal()" data-i18n="cancelBtn">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- DURESS PASSWORD MODAL -->
-<div id="duressModal" class="modal hidden">
-  <div class="modal-box">
-    <h2>🕵 Set Duress Password</h2>
-    <div class="modal-scroll">
-      <p style="font-size:13px;color:var(--muted)">If someone ever forces you to open this vault, enter this password instead of your real one. It opens an empty decoy vault that looks completely normal — nothing about the app reveals your real vault exists.</p>
-      <input id="duressPasswordInput" type="password" placeholder="Duress Password">
-      <input id="duressConfirmInput" type="password" placeholder="Confirm Duress Password">
-      <p style="font-size:12px;color:var(--muted)">Make sure this is different from your real master password. You can add a few harmless-looking entries to the decoy later, by unlocking with this password.</p>
-    </div>
-    <div class="modal-footer">
-      <button onclick="confirmSetDuress()">✅ Set Duress Password</button>
-      <button class="ghost" onclick="closeDuressModal()" data-i18n="cancelBtn">Cancel</button>
+      <!-- Buttons updated to use new semantic classes -->
+      <button class="button btn-secondary ghost" onclick="closeMigrationModal()" data-i18n="cancelBtn">Cancel</button>
     </div>
   </div>
 </div>
@@ -457,8 +724,9 @@ button:disabled{ opacity:.5; cursor:not-allowed; }
     <h2>⚠ Confirm</h2>
     <p id="confirmMessage" style="white-space:pre-line"></p>
     <div class="modal-footer">
-      <button id="confirmYesBtn" class="danger">Yes</button>
-      <button id="confirmNoBtn" class="ghost">Cancel</button>
+      <!-- Buttons updated to use new semantic classes -->
+      <button id="confirmYesBtn" class="button btn-danger">Yes</button>
+      <button id="confirmNoBtn" class="button btn-secondary ghost">Cancel</button>
     </div>
   </div>
 </div>
@@ -477,10 +745,9 @@ const translations = {
     migrateLinkText:"Migrate data from this browser →",
     navDashboard:"📊 Dashboard", navVault:"🔐 Vault", navFavorites:"⭐ Favorites",
     navDocuments:"📁 Documents", navBackupCopy:"📦 Backup Copy", navLock:"🔒 Lock Vault",
-    navEmergencySheet:"🖨 Emergency Sheet", navDuress:"🕵 Set Duress Password",
     dashWelcome:"Welcome back 🌲", guardianScore:"🛡 Guardian Score",
     statCredentials:"🔐 Items", statFavorites:"⭐ Favorites", statCategories:"📁 Categories",
-    statLatest:"🕒 Latest Entry", statDocuments:"📁 Documents", statBackup:"📦 Last Backup",
+    statLatest:"🕒 Latest Entry", statDocuments:"📁 Documents",
     vaultTitle:"🔐 Secure Vault", searchPh:"🔎 Search vault...",
     detailsTitle:"Item Details", detailsEmpty:"Select an item to view details.",
     addBtn:"➕ Add Item", favTitle:"⭐ Favorite Items",
@@ -505,13 +772,12 @@ const translations = {
     appName:"سنتينل جميل", tagline:"خزنة محمولة ومشفّرة تحملها معك.",
     landingTagline:"خزنتك تعيش في ملف واحد محمول — احتفظ به على فلاشة وافتحه من أي مكان.",
     openVaultBtn:"📂 فتح ملف الخزنة", createVaultFileBtn:"✨ إنشاء خزنة جديدة",
-    migrateLinkText:"ترحيل البيانات من هذا المتصفح ←",
+    migrateLinkText:"ترحيل البيانات من المتصفح ←",
     navDashboard:"📊 لوحة التحكم", navVault:"🔐 الخزنة", navFavorites:"⭐ المفضلة",
     navDocuments:"📁 المستندات", navBackupCopy:"📦 نسخة احتياطية", navLock:"🔒 قفل الخزنة",
-    navEmergencySheet:"🖨 ورقة الطوارئ", navDuress:"🕵 تعيين كلمة مرور الإكراه",
     dashWelcome:"مرحبًا بعودتك 🌲", guardianScore:"🛡 درجة الحارس",
     statCredentials:"🔐 العناصر", statFavorites:"⭐ المفضلة", statCategories:"📁 الفئات",
-    statLatest:"🕒 آخر إدخال", statDocuments:"📁 المستندات", statBackup:"📦 آخر نسخة احتياطية",
+    statLatest:"🕒 آخر إدخال", statDocuments:"📁 المستندات",
     vaultTitle:"🔐 الخزنة الآمنة", searchPh:"🔎 البحث في الخزنة...",
     detailsTitle:"تفاصيل العنصر", detailsEmpty:"اختر عنصرًا لعرض التفاصيل.",
     addBtn:"➕ إضافة عنصر", favTitle:"⭐ العناصر المفضلة",
@@ -530,7 +796,7 @@ const translations = {
     emptyFav:"لا توجد مفضلات بعد", emptyFavText:"ضع علامة على العناصر كمفضلة للوصول السريع.",
     itemDeleted:"تم حذف العنصر.", langToggle:"English",
     weakPw:"كلمات مرور ضعيفة", reusedPw:"كلمات مرور مكررة", stalePw:"لم تُحدَّث منذ 6 أشهر أو أكثر",
-    thriving:"مزدهرة", growing:"تنمو", sprouting:"تنبت", wilting:"ذابلة"
+    thriving:"Thriving", growing:"Growing", sprouting:"تنبت", wilting:"ذابلة"
   }
 };
 
@@ -601,15 +867,7 @@ function confirmDialog(message){
    ========================================================== */
 const PBKDF2_ITERATIONS = 200000;
 function randomBytes(len){ return crypto.getRandomValues(new Uint8Array(len)); }
-function bufToB64(buf){
-  const bytes = new Uint8Array(buf);
-  const chunkSize = 0x8000;
-  let binary = "";
-  for(let i = 0; i < bytes.length; i += chunkSize){
-    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
-  }
-  return btoa(binary);
-}
+function bufToB64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))); }
 function b64ToBuf(b64){ return Uint8Array.from(atob(b64), c => c.charCodeAt(0)); }
 
 async function deriveKey(password, saltB64, iterations){
@@ -630,14 +888,33 @@ async function decryptJSON(key, ivB64, cipherB64){
   return JSON.parse(new TextDecoder().decode(plain));
 }
 
+// Encrypts an ArrayBuffer
+async function encryptBuffer(key, buffer){
+  const iv = randomBytes(12);
+  const cipher = await crypto.subtle.encrypt({ name:"AES-GCM", iv }, key, buffer);
+  return { iv: bufToB64(iv), cipher: cipher }; // cipher is ArrayBuffer here
+}
+
+// Decrypts an ArrayBuffer
+async function decryptBuffer(key, ivB64, cipherBuffer){
+  const iv = b64ToBuf(ivB64);
+  return crypto.subtle.decrypt({ name:"AES-GCM", iv }, key, cipherBuffer);
+}
+
 /* ==========================================================
    TOTP (RFC 6238)
    ========================================================== */
 function base32Decode(str){
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-  const clean = str.toUpperCase().replace(/[^A-Z2-7]/g, "");
+  // Clean string, allowing '=' for padding which is typically removed/ignored at the end.
+  const clean = str.toUpperCase().replace(/[^A-Z2-7=]/g, "");
   let bits = "";
-  for(const c of clean){ const val = alphabet.indexOf(c); if(val === -1) continue; bits += val.toString(2).padStart(5, "0"); }
+  for(const c of clean){
+    if (c === '=') break; // Stop processing at padding characters
+    const val = alphabet.indexOf(c);
+    if(val === -1) continue; // Skip invalid Base32 characters
+    bits += val.toString(2).padStart(5, "0");
+  }
   const bytes = [];
   for(let i = 0; i + 8 <= bits.length; i += 8){ bytes.push(parseInt(bits.substr(i, 8), 2)); }
   return new Uint8Array(bytes);
@@ -683,64 +960,265 @@ let gateMode = "unlock";
 let editID = null, editFolderId = null;
 let lastGuardianScore = null;
 let autoLockTimer = null;
-let vaultMode = "primary";     // "primary" | "duress" — which password unlocked this session
-let openedContainer = null;    // the full container object; fields belonging to the OTHER mode
-                                // are carried forward untouched on every save
-let lastBackupAt = null;
+let currentVaultId = null; // A unique ID for the currently open vault's IndexedDB
+
+// IndexedDB Manager
+const SENTINEL_IDB_VERSION = 1;
+const SENTINEL_IDB_STORE_DOCS = 'documents';
+
+const sentinelIdb = {
+  db: null,
+  dbName: null,
+
+  async init(vaultId) {
+    if (!('indexedDB' in window)) {
+      console.warn("IndexedDB not supported.");
+      return;
+    }
+    // Prevent re-opening if already open for the same vaultId
+    if (this.db && this.dbName === `sentinel_vault_${vaultId}`) {
+        console.log(`IndexedDB: Already open for vault ${vaultId}. Skipping re-init.`);
+        return;
+    }
+    // If open for a different vault, close it first
+    if (this.db) {
+        console.log(`IndexedDB: Closing previous database connection for ${this.dbName} before opening for ${vaultId}.`);
+        this.close();
+    }
+
+    this.dbName = `sentinel_vault_${vaultId}`;
+    return new Promise((resolve, reject) => {
+      console.log(`IndexedDB: Attempting to open database ${this.dbName}`);
+      const request = indexedDB.open(this.dbName, SENTINEL_IDB_VERSION);
+
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(SENTINEL_IDB_STORE_DOCS)) {
+          console.log(`IndexedDB: Creating object store '${SENTINEL_IDB_STORE_DOCS}'`);
+          db.createObjectStore(SENTINEL_IDB_STORE_DOCS); // Store encrypted ArrayBuffer data
+        } else {
+            console.log(`IndexedDB: Object store '${SENTINEL_IDB_STORE_DOCS}' already exists.`);
+        }
+      };
+
+      request.onsuccess = (event) => {
+        this.db = event.target.result;
+        console.log(`IndexedDB: Database ${this.dbName} opened successfully.`);
+        resolve();
+      };
+
+      request.onerror = (event) => {
+        console.error("IndexedDB error on open:", event.target.error);
+        reject("Failed to open IndexedDB: " + event.target.error.message);
+      };
+    });
+  },
+
+  close() {
+    if (this.db) {
+      this.db.close();
+      this.db = null;
+      this.dbName = null;
+      console.log("IndexedDB: Database connection closed.");
+    }
+  },
+
+  async _getTransaction(storeName, mode) {
+    if (!this.db) {
+        console.error("IndexedDB not initialized or closed, cannot create transaction (getTransaction). CurrentVaultId:", currentVaultId, "IDB DBName:", this.dbName);
+        return null;
+    }
+    try {
+        const transaction = this.db.transaction(storeName, mode);
+        return transaction;
+    } catch (e) {
+        console.error(`Error creating IndexedDB transaction for store '${storeName}' (mode: ${mode}):`, e);
+        if (e.name === 'NotFoundError') {
+            console.error(`IndexedDB: Object store '${storeName}' not found. Database might be corrupted or not upgraded.`);
+        }
+        return null;
+    }
+  },
+
+  async saveDocumentContent(key, docId, docContentBuffer) {
+    if (!currentVaultId) {
+        console.error("saveDocumentContent: currentVaultId is null. Cannot save to IndexedDB.");
+        throw new Error("Vault not properly initialized (currentVaultId missing).");
+    }
+    if (!this.db || this.dbName !== `sentinel_vault_${currentVaultId}`) {
+      console.warn("IndexedDB not open for current vault, attempting re-init (save context). CurrentVaultId:", currentVaultId);
+      await this.init(currentVaultId);
+    }
+    const tx = await this._getTransaction(SENTINEL_IDB_STORE_DOCS, 'readwrite');
+    if (!tx) { console.error("Failed to get IndexedDB transaction for saving."); throw new Error("IndexedDB transaction failed."); }
+
+    return new Promise((resolve, reject) => {
+      const store = tx.objectStore(SENTINEL_IDB_STORE_DOCS);
+      encryptBuffer(masterKey, docContentBuffer).then(encrypted => {
+        console.log(`IndexedDB: Preparing to put docId=${docId}, iv=${encrypted.iv.substring(0, 10)}... into store.`);
+        const putRequest = store.put({ iv: encrypted.iv, cipher: encrypted.cipher }, docId);
+
+        putRequest.onsuccess = () => {
+          console.log(`IndexedDB: Document content put request successful for id: ${docId}.`);
+          // IMMEDIATE VERIFICATION: Try to get the item back within the same transaction
+          const checkRequest = store.get(docId);
+          checkRequest.onsuccess = (event) => {
+            const dataInDb = event.target.result;
+            if (dataInDb && dataInDb.iv === encrypted.iv && dataInDb.cipher) {
+              console.log(`IndexedDB: Verified document ${docId} exists in DB immediately after put. IV matches.`);
+              resolve(encrypted.iv);
+            } else {
+              const reason = dataInDb ? `IV mismatch (${dataInDb.iv?.substring(0, 10)}... vs ${encrypted.iv.substring(0, 10)}...) or missing cipher` : 'Data not found';
+              console.error(`IndexedDB: Verification failed for ${docId} after put. Reason: ${reason}. DataInDb: ${!!dataInDb}`);
+              reject(new Error("IndexedDB write verification failed or data corrupted."));
+            }
+          };
+          checkRequest.onerror = (event) => {
+            console.error(`IndexedDB: Error verifying document ${docId} after put:`, event.target.error);
+            reject(event.target.error);
+          };
+        };
+        putRequest.onerror = (event) => { console.error(`IndexedDB put error for docId=${docId}:`, event.target.error); reject(event.target.error); };
+        tx.oncomplete = () => { console.log(`IndexedDB: Save transaction for docId=${docId} completed.`); };
+        tx.onabort = (event) => { console.warn(`IndexedDB save transaction aborted for docId=${docId}.`, event.target.error); reject('Transaction aborted'); };
+      }).catch(e => { console.error(`Encryption failed during saveDocumentContent for docId=${docId}:`, e); reject(e); });
+    });
+  },
+
+  async loadDocumentContent(docId, docIv) {
+    if (!currentVaultId) {
+        console.error("loadDocumentContent: currentVaultId is null. Cannot load from IndexedDB.");
+        return null;
+    }
+    if (!this.db || this.dbName !== `sentinel_vault_${currentVaultId}`) {
+      console.warn("IndexedDB not open for current vault, attempting re-init (load context). CurrentVaultId:", currentVaultId);
+      await this.init(currentVaultId);
+    }
+    const tx = await this._getTransaction(SENTINEL_IDB_STORE_DOCS, 'readonly');
+    if (!tx) { console.error("Failed to get IndexedDB transaction for loading."); return null; }
+
+    return new Promise((resolve, reject) => {
+      const store = tx.objectStore(SENTINEL_IDB_STORE_DOCS);
+      const request = store.get(docId);
+
+      request.onsuccess = (event) => {
+        const encryptedData = event.target.result;
+        console.log(`IndexedDB: Fetched data from store for docId=${docId}. Data found: ${!!encryptedData}`);
+        if (encryptedData) {
+          console.log(`IndexedDB: Stored IV=${encryptedData.iv?.substring(0, 10)}..., Expected IV=${docIv?.substring(0, 10)}...`);
+        }
+        if (encryptedData && encryptedData.cipher && encryptedData.iv === docIv) {
+          console.log(`IndexedDB: Document content found for id: ${docId}. IVs match. Attempting decryption.`);
+          decryptBuffer(masterKey, encryptedData.iv, encryptedData.cipher)
+            .then(resolve)
+            .catch(e => { console.error(`Decryption failed for document ID=${docId}:`, e); reject(e); });
+        } else {
+          console.warn(`IndexedDB: Document content not found or IV mismatch for id: ${docId}. (Stored data existence: ${!!encryptedData}, IV match: ${encryptedData?.iv === docIv})`)
+          resolve(null);
+        }
+      };
+
+      request.onerror = (event) => { console.error(`IndexedDB load error for docId=${docId}:`, event.target.error); reject(event.target.error); };
+    });
+  },
+
+  async deleteDocumentContent(docId) {
+    if (!this.db) { return; }
+    const tx = await this._getTransaction(SENTINEL_IDB_STORE_DOCS, 'readwrite');
+    if (!tx) { console.error("Failed to get IndexedDB transaction for deleting."); return; }
+
+    return new Promise((resolve, reject) => {
+      const store = tx.objectStore(SENTINEL_IDB_STORE_DOCS);
+      store.delete(docId);
+      tx.oncomplete = () => {
+        console.log(`IndexedDB: Document content with id ${docId} deleted.`);
+        resolve();
+      };
+      tx.onerror = (event) => { console.error(`IndexedDB delete error for docId=${docId}:`, event.target.error); reject(event.target.error); };
+      tx.onabort = (event) => { console.warn(`IndexedDB delete transaction aborted for docId=${docId}.`, event.target.error); reject('Transaction aborted'); };
+    });
+  },
+
+  async clearDocumentStore() {
+    if (!this.db) { return; }
+    const tx = await this._getTransaction(SENTINEL_IDB_STORE_DOCS, 'readwrite');
+    if (!tx) { console.error("Failed to get IndexedDB transaction for clearing."); return; }
+
+    return new Promise((resolve, reject) => {
+        const store = tx.objectStore(SENTINEL_IDB_STORE_DOCS);
+        store.clear();
+        tx.oncomplete = () => { console.log("IndexedDB: Document store cleared."); resolve(); };
+        tx.onerror = (event) => { console.error("IndexedDB clear error:", event.target.error); reject(event.target.error); };
+        tx.onabort = (event) => { console.warn("IndexedDB clear transaction aborted."); reject('Transaction aborted'); };
+    });
+  },
+
+  async deleteDatabase() {
+      if (!this.dbName) return;
+      this.close(); // Ensure connection is closed before deleting
+      return new Promise((resolve, reject) => {
+          console.log(`IndexedDB: Attempting to delete database ${this.dbName}`);
+          const request = indexedDB.deleteDatabase(this.dbName);
+          request.onsuccess = () => {
+              this.dbName = null;
+              console.log(`IndexedDB: Database ${this.dbName} deleted successfully.`);
+              resolve();
+          };
+          request.onerror = (event) => {
+              console.error("Error deleting IndexedDB:", event.target.error);
+              reject(event.target.error);
+          };
+          request.onblocked = () => {
+              console.warn("IndexedDB delete blocked. Close all connections to the database.");
+              reject("Deletion blocked");
+          };
+      });
+  }
+};
 
 /* ==========================================================
    FILE CONTAINER
    ========================================================== */
 async function buildContainerText(){
-  const payload = { vaultName: currentVaultName, items: credentials, docFolders, documents, lastBackupAt };
+  if (!currentVaultId) {
+    currentVaultId = Date.now().toString(36) + Math.random().toString(36).substr(2); // Simple unique ID
+    console.warn("buildContainerText: currentVaultId was null, generated a new one. This implies an unsaved new vault.");
+  }
+  if (!masterKey) {
+      console.error("buildContainerText: Master key is not set. Cannot encrypt payload.");
+      throw new Error("Master key not available for encryption.");
+  }
+
+  const payload = { vaultName: currentVaultName, vaultId: currentVaultId, items: credentials, docFolders, documents };
   const enc = await encryptJSON(masterKey, payload);
-  const out = Object.assign({ app: "Jamil's Sentinel", formatVersion: 1 }, openedContainer || {});
-  if(vaultMode === "primary"){
-    out.salt = authSalt; out.iterations = authIterations;
-    out.verifierIV = verifierIV; out.verifierCipher = verifierCipher;
-    out.payloadIV = enc.iv; out.payloadCipher = enc.cipher;
-  } else {
-    out.duressSalt = authSalt; out.duressIterations = authIterations;
-    out.duressVerifierIV = verifierIV; out.duressVerifierCipher = verifierCipher;
-    out.duressPayloadIV = enc.iv; out.duressPayloadCipher = enc.cipher;
-  }
-  return JSON.stringify(out);
+  return JSON.stringify({
+    app: "Jamil's Sentinel", formatVersion: 1,
+    salt: authSalt, iterations: authIterations, verifierIV, verifierCipher,
+    payloadIV: enc.iv, payloadCipher: enc.cipher
+  });
 }
-
-// Tries the primary password first, then the duress password (if configured).
-// Never reveals which one matched beyond what the caller does with the result.
-async function tryUnlockContainer(text, password){
+async function parseContainer(text, password){
+  console.log("parseContainer: Initiated.");
   const container = JSON.parse(text);
-
-  if(container.salt){
-    try{
-      const key = await deriveKey(password, container.salt, container.iterations);
-      const check = await decryptJSON(key, container.verifierIV, container.verifierCipher);
-      if(check.check === "SENTINEL-OK-v7"){
-        const payload = await decryptJSON(key, container.payloadIV, container.payloadCipher);
-        return { mode:"primary", key, container, payload };
-      }
-    } catch(e){ /* fall through to duress attempt */ }
+  console.log("parseContainer: Container parsed. Salt:", container.salt, "Iterations:", container.iterations);
+  const key = await deriveKey(password, container.salt, container.iterations);
+  console.log("parseContainer: Master key derived.");
+  const check = await decryptJSON(key, container.verifierIV, container.verifierCipher);
+  if(check.check !== "SENTINEL-OK-v7") {
+      console.error("parseContainer: Verifier check failed.");
+      throw new Error("bad password");
   }
-
-  if(container.duressSalt){
-    try{
-      const key = await deriveKey(password, container.duressSalt, container.duressIterations);
-      const check = await decryptJSON(key, container.duressVerifierIV, container.duressVerifierCipher);
-      if(check.check === "SENTINEL-DURESS-v7"){
-        const payload = await decryptJSON(key, container.duressPayloadIV, container.duressPayloadCipher);
-        return { mode:"duress", key, container, payload };
-      }
-    } catch(e){ /* fall through */ }
-  }
-
-  throw new Error("bad password");
+  console.log("parseContainer: Verifier check successful.");
+  const payload = await decryptJSON(key, container.payloadIV, container.payloadCipher);
+  console.log("parseContainer: Payload decrypted. VaultId from payload:", payload.vaultId);
+  return { key, container, payload };
 }
 
 /* ==========================================================
    OPEN / CREATE / GATE FLOW
    ========================================================== */
 async function openVaultFile(){
+  console.log("openVaultFile: Initiated.");
   if(hasFSAccess){
     try{
       const [handle] = await window.showOpenFilePicker({
@@ -749,24 +1227,30 @@ async function openVaultFile(){
       const file = await handle.getFile();
       pendingOpenText = await file.text();
       pendingFileHandle = handle;
+      console.log("openVaultFile: File selected via FSA, showing unlock gate.");
       showUnlockGate();
     } catch(err){
       if(err.name !== "AbortError") toast("Could not open file: " + (err.message || err), "error");
+      console.error("openVaultFile (FSA) error:", err);
     }
   } else {
     document.getElementById("openFileInput").click();
+    console.log("openVaultFile: Using classic file input.");
   }
 }
 async function handleClassicOpenFile(){
+  console.log("handleClassicOpenFile: Initiated.");
   const input = document.getElementById("openFileInput");
   const file = input.files[0];
   if(!file) return;
   pendingOpenText = await file.text();
   pendingFileHandle = null;
+  console.log("handleClassicOpenFile: File selected, showing unlock gate.");
   showUnlockGate();
   input.value = "";
 }
 function showUnlockGate(){
+  console.log("showUnlockGate: Displaying unlock gate.");
   gateMode = "unlock";
   document.getElementById("gateTitle").textContent = "Unlock Vault";
   document.getElementById("gateVaultNameRow").classList.add("hidden");
@@ -778,6 +1262,7 @@ function showUnlockGate(){
   showGate();
 }
 function openCreateForm(){
+  console.log("openCreateForm: Displaying create vault form.");
   gateMode = "create";
   document.getElementById("gateTitle").textContent = "Create New Vault";
   document.getElementById("gateVaultNameRow").classList.remove("hidden");
@@ -791,15 +1276,18 @@ function openCreateForm(){
   showGate();
 }
 function showGate(){
+  console.log("showGate: Transitioning from landing to password gate.");
   document.getElementById("landing").classList.add("hidden");
   document.getElementById("passwordGate").classList.remove("hidden");
   document.getElementById("gatePassword").focus();
 }
 function cancelGate(){
+  console.log("cancelGate: Returning to landing page.");
   document.getElementById("passwordGate").classList.add("hidden");
   document.getElementById("landing").classList.remove("hidden");
 }
 function showGateError(msg){
+  console.error("showGateError:", msg);
   const el = document.getElementById("gateMessage");
   el.className = "msg error";
   el.textContent = msg;
@@ -807,35 +1295,72 @@ function showGateError(msg){
 
 async function gateSubmit(){
   const password = document.getElementById("gatePassword").value;
+  console.log(`gateSubmit: Initiated for mode ${gateMode}`);
 
   if(gateMode === "unlock"){
     try{
-      const { mode, key, container, payload } = await tryUnlockContainer(pendingOpenText, password);
+      console.log("gateSubmit: Attempting to unlock vault.");
+      const { key, container, payload } = await parseContainer(pendingOpenText, password);
+      console.log("gateSubmit: Vault parsed, payload decrypted.");
       masterKey = key;
-      vaultMode = mode;
-      openedContainer = container;
-      if(mode === "primary"){
-        authSalt = container.salt; authIterations = container.iterations;
-        verifierIV = container.verifierIV; verifierCipher = container.verifierCipher;
-      } else {
-        authSalt = container.duressSalt; authIterations = container.duressIterations;
-        verifierIV = container.duressVerifierIV; verifierCipher = container.duressVerifierCipher;
-      }
+      authSalt = container.salt; authIterations = container.iterations;
+      verifierIV = container.verifierIV; verifierCipher = container.verifierCipher;
       credentials = payload.items || [];
       docFolders = payload.docFolders || [];
       documents = payload.documents || [];
       currentVaultName = payload.vaultName || "My Vault";
-      lastBackupAt = payload.lastBackupAt || null;
+      currentVaultId = payload.vaultId || null;
+
+      if (!currentVaultId) {
+          console.log("gateSubmit: No vaultId found in .sentinel file, generating new one and marking as unsaved.");
+          currentVaultId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+          hasUnsavedChanges = true;
+      }
+      console.log("gateSubmit: Initializing IndexedDB for vaultId:", currentVaultId);
+      await sentinelIdb.init(currentVaultId);
+      console.log("gateSubmit: IndexedDB initialized for vaultId:", currentVaultId);
+
+      const documentsToMigrate = documents.filter(doc => doc.dataB64);
+      if (documents.filter(doc => doc.dataB64).length > 0) { // Only show toast if migration is actually happening
+          console.log(`gateSubmit: Starting document migration for ${documentsToMigrate.length} documents.`);
+          toast(`Migrating ${documentsToMigrate.length} documents to IndexedDB... This may take a moment.`, 'warn');
+      }
+
+      for (const doc of documentsToMigrate) {
+          const buffer = b64ToBuf(doc.dataB64).buffer;
+          try {
+              const docIv = await sentinelIdb.saveDocumentContent(masterKey, doc.id, buffer);
+              doc.idbKey = doc.id;
+              doc.docIv = docIv;
+              delete doc.dataB64;
+              hasUnsavedChanges = true;
+              console.log(`gateSubmit: Migrated doc ${doc.id} to IDB.`);
+          } catch (e) {
+              console.error("Error migrating document to IndexedDB:", doc.name, e);
+              toast(`Failed to migrate document: ${doc.name}`, 'error');
+          }
+      }
+      if (documents.filter(doc => doc.dataB64).length > 0) {
+          toast('Document migration complete. Please save the vault.', 'success');
+          console.log("gateSubmit: Document migration finished.");
+      }
+
+
       fileHandle = pendingFileHandle;
-      hasUnsavedChanges = false;
+      if (!hasUnsavedChanges) hasUnsavedChanges = false;
+      console.log("gateSubmit: Calling enterApp().");
       enterApp();
     } catch(err){
+      console.error("gateSubmit (unlock) caught error:", err);
       showGateError("Incorrect password, or this isn't a valid Sentinel vault file.");
+      sentinelIdb.close(); // Ensure IndexedDB is closed on failure
+      return;
     }
     return;
   }
 
   // create or create-migrated
+  console.log("gateSubmit: Attempting to create new vault.");
   const confirmPw = document.getElementById("gateConfirmPassword").value;
   const name = document.getElementById("gateVaultName").value.trim() || "My Vault";
   if(password.length < 8){ showGateError("Password must be at least 8 characters"); return; }
@@ -847,44 +1372,62 @@ async function gateSubmit(){
   const verifier = await encryptJSON(masterKey, { check:"SENTINEL-OK-v7" });
   verifierIV = verifier.iv; verifierCipher = verifier.cipher;
   currentVaultName = name;
+  currentVaultId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+  console.log("gateSubmit: Initializing IndexedDB for new vaultId:", currentVaultId);
+  await sentinelIdb.init(currentVaultId);
+  console.log("gateSubmit: IndexedDB initialized for new vault.");
+
   if(gateMode === "create"){ credentials = []; docFolders = []; documents = []; }
-  vaultMode = "primary";
-  openedContainer = { salt: authSalt, iterations: authIterations, verifierIV, verifierCipher };
-  lastBackupAt = null;
   fileHandle = null;
   hasUnsavedChanges = true;
+  console.log("gateSubmit: Calling enterApp().");
   enterApp();
-  await saveVaultFile(true);
+  await saveVaultFile(true); // Automatically prompts user to save new vault
 }
 
 function enterApp(){
+  console.log("enterApp: Function started.");
   document.getElementById("landing").classList.add("hidden");
   document.getElementById("passwordGate").classList.add("hidden");
   document.getElementById("app").style.display = "block";
+  console.log("enterApp: Initial elements hidden/shown.");
+
+  // CRITICAL CHECK: Ensure masterKey and currentVaultId are set
+  if (!masterKey || !currentVaultId) {
+      console.error("enterApp: masterKey or currentVaultId is null/undefined. Cannot proceed with app rendering.");
+      toast("Critical error: Vault state corrupted during unlock/creation. Please reload.", "error");
+      lockVault(); // Go back to landing page safely
+      return;
+  }
+
   document.getElementById("currentVaultLabel").textContent = currentVaultName;
   document.getElementById("dashVaultName").textContent = currentVaultName;
   currentFolderId = null;
+  console.log("enterApp: Vault info set, calling showPage('dashboard').");
   showPage("dashboard");
+  console.log("enterApp: showPage('dashboard') called.");
   armAutoLock();
   updateSaveIndicator();
-  const duressMenu = document.getElementById("duressMenuItem");
-  if(duressMenu) duressMenu.classList.toggle("hidden", vaultMode !== "primary");
+  console.log("enterApp: Auto-lock armed and save indicator updated. App should be fully rendered.");
 }
 
 async function lockVault(){
-  closeSidebar();
+  console.log("lockVault: Initiated.");
   if(hasUnsavedChanges && !(await confirmDialog("You have unsaved changes. Lock anyway and discard them?"))) return;
   masterKey = null; fileHandle = null;
   credentials = []; docFolders = []; documents = []; currentVaultName = "";
-  vaultMode = "primary"; openedContainer = null; lastBackupAt = null;
+  sentinelIdb.close();
+  currentVaultId = null;
+
   clearInterval(totpInterval); clearTimeout(autoLockTimer);
   document.getElementById("app").style.display = "none";
   document.getElementById("passwordGate").classList.add("hidden");
   document.getElementById("landing").classList.remove("hidden");
+  console.log("lockVault: Vault locked and state cleared.");
 }
 function armAutoLock(){
   clearTimeout(autoLockTimer);
-  autoLockTimer = setTimeout(() => { if(masterKey) lockVault(); }, 5 * 60 * 1000);
+  autoLockTimer = setTimeout(() => { if(masterKey) { console.log("Auto-locking vault due to inactivity."); lockVault(); } }, 5 * 60 * 1000);
 }
 ["mousemove","keydown","click"].forEach(evt => document.addEventListener(evt, () => { if(masterKey) armAutoLock(); }));
 
@@ -898,12 +1441,30 @@ async function verifyPermission(handle){
   return false;
 }
 
+function updateSaveIndicator(){
+  const el = document.getElementById("saveIndicator");
+  if(!el) return;
+  if(hasUnsavedChanges){
+    el.textContent = "● Unsaved changes — click to save";
+    el.onclick = () => saveVaultFile(false);
+    el.className = "save-indicator dirty";
+  } else {
+    el.textContent = fileHandle ? "✓ Saved" : "✓ Up to date";
+    el.onclick = null;
+    el.className = "save-indicator clean";
+  }
+  console.log("updateSaveIndicator: Status changed to", hasUnsavedChanges ? "dirty" : "clean");
+}
+
 async function saveVaultFile(forcePickLocation){
+  console.log("saveVaultFile: Initiated.");
+  if (!masterKey) {
+      console.error("saveVaultFile: Master key is not set. Cannot save.");
+      toast("Error: Master key is missing. Cannot save vault.", "error");
+      return;
+  }
   const text = await buildContainerText();
 
-  // Routine auto-save to an already-connected file: succeed silently, or fail cleanly.
-  // Never silently fall through to a surprise "Save As" dialog here — that could create
-  // a second, divergent file while the real one on disk never gets the update.
   if(hasFSAccess && fileHandle && !forcePickLocation){
     try{
       if(await verifyPermission(fileHandle)){
@@ -912,18 +1473,12 @@ async function saveVaultFile(forcePickLocation){
         await writable.close();
         hasUnsavedChanges = false;
         updateSaveIndicator();
+        console.log("saveVaultFile: Live save successful to existing fileHandle.");
         return;
-      } else {
-        console.error("Write permission not granted for the connected vault file.");
       }
-    } catch(err){
-      console.error("Live auto-save failed:", err);
-    }
-    return; // leave hasUnsavedChanges = true; persist() will report this to the user
+    } catch(err){ console.error("Live save failed, falling back:", err); }
   }
 
-  // Reaches here only for: forcePickLocation === true (new vault / explicit Save As),
-  // or no live file connection exists yet at all.
   if(hasFSAccess){
     try{
       const handle = await window.showSaveFilePicker({
@@ -936,10 +1491,11 @@ async function saveVaultFile(forcePickLocation){
       fileHandle = handle;
       hasUnsavedChanges = false;
       updateSaveIndicator();
+      console.log("saveVaultFile: Save picker successful (new fileHandle acquired).");
       return;
     } catch(err){
-      if(err.name === "AbortError") return;
-      console.error("Save picker failed, falling back to download:", err);
+      if(err.name === "AbortError") console.warn("saveVaultFile: Save picker aborted by user.");
+      else console.error("Save picker failed, falling back to download:", err);
     }
   }
 
@@ -951,179 +1507,31 @@ async function saveVaultFile(forcePickLocation){
   hasUnsavedChanges = false;
   updateSaveIndicator();
   toast("💾 Downloaded the updated vault file. Move it onto your thumb drive (replacing the old copy) to keep it portable.", "success");
-}
-
-async function saveAsCopy(){
-  closeSidebar();
-  const previousBackupAt = lastBackupAt;
-  lastBackupAt = new Date().toISOString();
-  const text = await buildContainerText();
-  const suggested = (currentVaultName || "Vault") + "-backup-" + new Date().toISOString().slice(0,10) + ".sentinel";
-  let saved = false;
-  if(hasFSAccess){
-    try{
-      const handle = await window.showSaveFilePicker({
-        suggestedName: suggested,
-        types: [{ description:"Sentinel Vault", accept: { "application/json": [".sentinel",".json"] } }]
-      });
-      const writable = await handle.createWritable();
-      await writable.write(text);
-      await writable.close();
-      toast("📦 Backup copy saved.", "success");
-      saved = true;
-    } catch(err){
-      if(err.name === "AbortError"){ lastBackupAt = previousBackupAt; return; }
-    }
-  }
-  if(!saved){
-    const blob = new Blob([text], { type:"application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = suggested;
-    a.click();
-  }
-  await persist(); // record the new backup timestamp into the live vault too
-  updateDashboard();
-}
-
-/* ==========================================================
-   DURESS / DECOY VAULT
-   ========================================================== */
-function openDuressModal(){
-  closeSidebar();
-  document.getElementById("duressPasswordInput").value = "";
-  document.getElementById("duressConfirmInput").value = "";
-  document.getElementById("duressModal").classList.remove("hidden");
-}
-function closeDuressModal(){ document.getElementById("duressModal").classList.add("hidden"); }
-
-async function confirmSetDuress(){
-  const pw = document.getElementById("duressPasswordInput").value;
-  const confirmPw = document.getElementById("duressConfirmInput").value;
-  if(pw.length < 8){ toast("Duress password must be at least 8 characters", "error"); return; }
-  if(pw !== confirmPw){ toast("Passwords do not match", "error"); return; }
-
-  const dSalt = bufToB64(randomBytes(16));
-  const dIterations = PBKDF2_ITERATIONS;
-  const dKey = await deriveKey(pw, dSalt, dIterations);
-  const verifier = await encryptJSON(dKey, { check:"SENTINEL-DURESS-v7" });
-  const decoyPayload = { vaultName: currentVaultName, items: [], docFolders: [], documents: [], lastBackupAt: null };
-  const decoyEnc = await encryptJSON(dKey, decoyPayload);
-
-  if(!openedContainer) openedContainer = {};
-  openedContainer.duressSalt = dSalt;
-  openedContainer.duressIterations = dIterations;
-  openedContainer.duressVerifierIV = verifier.iv;
-  openedContainer.duressVerifierCipher = verifier.cipher;
-  openedContainer.duressPayloadIV = decoyEnc.iv;
-  openedContainer.duressPayloadCipher = decoyEnc.cipher;
-
-  const saved = await persist();
-  closeDuressModal();
-  if(saved){
-    toast("Duress password set and saved to disk. It now opens an empty decoy vault instead of this one.", "success");
-  } else {
-    toast("⚠ Duress password created but NOT yet written to disk. Click the red 'Unsaved changes' button in the sidebar now, and don't rely on this until it turns green.", "error");
-  }
-}
-
-/* ==========================================================
-   EMERGENCY ACCESS SHEET — names only, never secrets
-   ========================================================== */
-function openEmergencySheet(){
-  closeSidebar();
-  const rows = sortByTitle(credentials).map(item => `
-    <tr>
-      <td>${escapeHtml(item.title)}</td>
-      <td>${escapeHtml(item.identifier || "—")}</td>
-      <td>${escapeHtml(item.category)}</td>
-    </tr>`).join("");
-  const docRows = documents.map(d => `<li>${escapeHtml(d.name)}</li>`).join("");
-
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Emergency Access Sheet</title>
-    <style>
-      body{ font-family:Georgia,serif; max-width:700px; margin:40px auto; color:#173528; }
-      h1{ color:#0b4f35; }
-      table{ width:100%; border-collapse:collapse; margin-top:20px; }
-      th, td{ text-align:left; padding:8px; border-bottom:1px solid #ccc; }
-      th{ color:#0b4f35; }
-      .note{ font-size:13px; color:#777; margin-top:30px; }
-      @media print{ button{ display:none; } }
-    </style></head><body>
-    <h1>🌲 ${escapeHtml(currentVaultName)} — Emergency Access Sheet</h1>
-    <p>Generated ${new Date().toLocaleDateString()}. This sheet lists <strong>account names and usernames only — no passwords</strong>, for reference if someone else ever needs to know what accounts exist.</p>
-    <table><thead><tr><th>Account</th><th>Username</th><th>Category</th></tr></thead><tbody>${rows}</tbody></table>
-    ${documents.length ? `<h2>Documents on file</h2><ul>${docRows}</ul>` : ""}
-    <p class="note">The actual passwords and document contents remain encrypted in the Sentinel vault file itself.</p>
-    <button onclick="window.print()" style="margin-top:20px;padding:10px 18px;">🖨 Print</button>
-    </body></html>`;
-
-  const win = window.open("", "_blank");
-  if(win){
-    win.document.write(html);
-    win.document.close();
-  } else {
-    const blob = new Blob([html], { type:"text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = (currentVaultName || "Vault") + "-emergency-sheet.html";
-    a.click();
-    toast("Pop-up was blocked — downloaded the sheet as a file instead.", "info");
-  }
+  console.log("saveVaultFile: Fallback download initiated.");
 }
 
 async function persist(){
+  console.log("persist: Initiated. Has unsaved changes:", hasUnsavedChanges);
   hasUnsavedChanges = true;
   updateSaveIndicator();
-  const shouldAutoSave = hasFSAccess && fileHandle;
-  if(shouldAutoSave){
-    await saveVaultFile(false);
-    if(hasUnsavedChanges){
-      toast("⚠ Auto-save failed — this change was NOT written to your file yet. Click the red 'Unsaved changes' button in the sidebar now.", "error");
-    }
-  }
-  return !hasUnsavedChanges; // true only if the write actually completed
-}
 
-async function manualSaveClick(){
-  if(hasFSAccess && fileHandle){
-    try{
-      if(await verifyPermission(fileHandle)){
-        const text = await buildContainerText();
-        const writable = await fileHandle.createWritable();
-        await writable.write(text);
-        await writable.close();
-        hasUnsavedChanges = false;
-        updateSaveIndicator();
-        toast("💾 Saved.", "success");
-        return;
+  // Ensure IndexedDB is initialized for the *current* vault.
+  if (currentVaultId) {
+    if (!sentinelIdb.db || sentinelIdb.dbName !== `sentinel_vault_${currentVaultId}`) {
+      try {
+          console.log("persist: IndexedDB not initialized or for wrong vault. Attempting re-init with currentVaultId:", currentVaultId);
+          await sentinelIdb.init(currentVaultId);
+      } catch (e) {
+          toast("IndexedDB failed to initialize. Document operations may not work.", "error");
+          console.error("IndexedDB init failed during persist:", e);
       }
-    } catch(err){ console.error("Manual save to connected file failed:", err); }
-
-    const useNewLocation = await confirmDialog(
-      "Could not save to the original file — it may be disconnected, permission was denied, or the drive was removed.\n\nSave a new copy to a different location instead? (You'll need to manually replace your original file with this one afterward.)"
-    );
-    if(useNewLocation){
-      await saveVaultFile(true);
-      if(!hasUnsavedChanges) toast("Saved to a new location — remember to update your original file with this copy.", "info");
     }
-    return;
+  } else if (sentinelIdb.db) {
+      console.warn("persist: currentVaultId is null but IndexedDB is open. Closing IDB for safety.");
+      sentinelIdb.close();
   }
-  await saveVaultFile(false);
-}
 
-function updateSaveIndicator(){
-  const el = document.getElementById("saveIndicator");
-  if(!el) return;
-  if(hasUnsavedChanges){
-    el.textContent = "● Unsaved changes — click to save";
-    el.onclick = () => manualSaveClick();
-    el.className = "save-indicator dirty";
-  } else {
-    el.textContent = fileHandle ? "✓ Saved" : "✓ Up to date";
-    el.onclick = null;
-    el.className = "save-indicator clean";
-  }
+  if(hasFSAccess && fileHandle){ await saveVaultFile(false); }
 }
 
 /* ==========================================================
@@ -1132,12 +1540,13 @@ function updateSaveIndicator(){
 function detectOldData(){ return !!localStorage.getItem("sentinel_v6_auth"); }
 
 function startMigration(){
+  console.log("startMigration: Initiated.");
   const authRaw = localStorage.getItem("sentinel_v6_auth");
   if(!authRaw){ toast("No previous browser vault data found on this browser.", "error"); return; }
   const vaults = JSON.parse(localStorage.getItem("sentinel_v6_vaults") || "[]");
   if(vaults.length === 0){ toast("No vaults found in this browser's storage.", "error"); return; }
   document.getElementById("migrationVaultList").innerHTML = vaults.map(v =>
-    `<button class="ghost wide" onclick="selectMigrationVault(${v.id}, '${v.name.replace(/'/g,"\\'")}')">${escapeHtml(v.name)} (${v.count} items)</button>`
+    `<button class="button btn-secondary ghost wide" onclick="selectMigrationVault(${v.id}, '${v.name.replace(/'/g,"\\'")}')">${escapeHtml(v.name)} (${v.count} items)</button>`
   ).join("");
   document.getElementById("migrationPasswordStep").classList.add("hidden");
   document.getElementById("migrationModal").classList.remove("hidden");
@@ -1146,52 +1555,67 @@ function closeMigrationModal(){ document.getElementById("migrationModal").classL
 
 let migrateOldVaultId = null, migrateOldVaultName = null;
 function selectMigrationVault(id, name){
+  console.log("selectMigrationVault:", id, name);
   migrateOldVaultId = id; migrateOldVaultName = name;
   document.getElementById("migrationPasswordStep").classList.remove("hidden");
   document.getElementById("migrationSelectedName").textContent = name;
   document.getElementById("migratePassword").value = "";
 }
 
-function getOldDocuments(vaultId){
+async function getOldDocuments(vaultId){
   return new Promise((resolve) => {
     try{
       const req = indexedDB.open("sentinel_v6_files", 1);
       req.onsuccess = (e) => {
         const db = e.target.result;
-        if(!db.objectStoreNames.contains("documents")){ resolve([]); return; }
+        if(!db.objectStoreNames.contains("documents")){ console.warn("getOldDocuments: No 'documents' store in v6 DB."); resolve([]); return; }
         const tx = db.transaction("documents", "readonly");
         const idx = tx.objectStore("documents").index("vaultId");
         const r = idx.getAll(vaultId);
-        r.onsuccess = () => resolve(r.result || []);
-        r.onerror = () => resolve([]);
+        r.onsuccess = () => { console.log(`getOldDocuments: Retrieved ${r.result.length} old documents.`); resolve(r.result || []); };
+        r.onerror = (event) => { console.error("getOldDocuments IndexedDB error:", event.target.error); resolve([]); };
       };
-      req.onerror = () => resolve([]);
+      req.onerror = (event) => { console.error("getOldDocuments IndexedDB open error:", event.target.error); resolve([]); };
       req.onupgradeneeded = () => resolve([]);
-    } catch(e){ resolve([]); }
+    } catch(e){ console.error("getOldDocuments unexpected error:", e); resolve([]); }
   });
 }
 
 async function confirmMigration(){
+  console.log("confirmMigration: Initiated.");
   const password = document.getElementById("migratePassword").value;
   try{
     const auth = JSON.parse(localStorage.getItem("sentinel_v6_auth"));
     const key = await deriveKey(password, auth.salt, auth.iterations);
     const check = await decryptJSON(key, auth.verifierIV, auth.verifierCipher);
-    if(check.check !== "SENTINEL-OK-v6") throw new Error("bad password");
+    if(check.check !== "SENTINEL-OK-v6") {
+      console.error("confirmMigration: V6 verifier check failed.");
+      throw new Error("bad password");
+    }
 
     const raw = localStorage.getItem(`sentinel_v6_vaultdata_${migrateOldVaultId}`);
-    const decrypted = raw ? await decryptJSON(key, JSON.parse(raw).iv, JSON.parse(raw).cipher) : { items:[], docFolders:[] };
-    const items = Array.isArray(decrypted) ? decrypted : (decrypted.items || []);
-    const folders = Array.isArray(decrypted) ? [] : (decrypted.docFolders || []);
+    let decryptedPayload = { items:[], docFolders:[] };
+    if (raw) {
+      const parsedRaw = JSON.parse(raw);
+      decryptedPayload = await decryptJSON(key, parsedRaw.iv, parsedRaw.cipher);
+    }
+    const items = Array.isArray(decryptedPayload) ? decryptedPayload : (decryptedPayload.items || []);
+    const folders = Array.isArray(decryptedPayload) ? [] : (decryptedPayload.docFolders || []);
 
     let docs = [];
+    currentVaultId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    console.log("confirmMigration: New vaultId generated for migration target:", currentVaultId);
+    await sentinelIdb.init(currentVaultId);
+
     try{
       const dbDocs = await getOldDocuments(migrateOldVaultId);
       for(const d of dbDocs){
-        const plain = await crypto.subtle.decrypt({ name:"AES-GCM", iv:d.iv }, key, d.cipher);
-        docs.push({ id:d.id, folderId:d.folderId, name:d.name, mimeType:d.mimeType, size:d.size, created:d.created, dataB64: bufToB64(plain) });
+        const plainBuffer = await crypto.subtle.decrypt({ name:"AES-GCM", iv:b64ToBuf(d.iv) }, key, b64ToBuf(d.cipher));
+        const docIv = await sentinelIdb.saveDocumentContent(key, d.id, plainBuffer);
+        docs.push({ id:d.id, folderId:d.folderId, name:d.name, mimeType:d.mimeType, size:d.size, created:d.created, idbKey: d.id, docIv: docIv });
+        console.log(`confirmMigration: Migrated old v6 doc ${d.id} to new IDB.`);
       }
-    } catch(e){ console.warn("No documents migrated (likely blocked under file://):", e); docs = []; }
+    } catch(e){ console.warn("confirmMigration: No v6 documents migrated or encountered error:", e); docs = []; }
 
     credentials = items; docFolders = folders; documents = docs;
     closeMigrationModal();
@@ -1209,28 +1633,19 @@ async function confirmMigration(){
     showGate();
   } catch(err){
     toast("Incorrect password for that vault, or migration failed: " + (err.message || err), "error");
+    console.error("confirmMigration error:", err);
   }
 }
 
 /* ==========================================================
    NAVIGATION
    ========================================================== */
-function toggleSidebar(){
-  document.getElementById("sidebarEl").classList.toggle("sidebar-open");
-  document.getElementById("sidebarOverlay").classList.toggle("show");
-}
-function closeSidebar(){
-  document.getElementById("sidebarEl").classList.remove("sidebar-open");
-  document.getElementById("sidebarOverlay").classList.remove("show");
-}
-
 function showPage(page){
-  closeSidebar();
+  console.log(`showPage: Navigating to ${page}`);
   ["dashboard","vault","favorites","documents"].forEach(id => document.getElementById(id).classList.add("hidden"));
   const target = document.getElementById(page);
   target.classList.remove("hidden");
-  target.classList.remove("page-fade-in");
-  void target.offsetWidth; // restart animation
+  void target.offsetWidth; // Force reflow to restart animation
   target.classList.add("page-fade-in");
   document.querySelectorAll(".menu[data-page]").forEach(m => m.classList.toggle("active", m.dataset.page === page));
   if(page === "vault") renderVault();
@@ -1277,20 +1692,18 @@ function renderCredentialGrid(containerId, items, emptyTitle, emptyText){
   if(items.length === 0){ box.innerHTML = `<div class="card"><h2>${emptyTitle}</h2><p>${emptyText}</p></div>`; return; }
   box.innerHTML = items.map(credentialCard).join("");
 }
-function sortByTitle(items){
-  return [...items].sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity:"base" }));
-}
 function renderVault(){
   const search = (document.getElementById("vaultSearch").value || "").toLowerCase();
   const filtered = credentials.filter(item =>
     item.title.toLowerCase().includes(search) ||
     (item.identifier || "").toLowerCase().includes(search) ||
-    item.category.toLowerCase().includes(search)
+    item.category.toLowerCase().includes(search) ||
+    item.customFields?.some(cf => cf.label.toLowerCase().includes(search) || cf.value.toLowerCase().includes(search))
   );
-  renderCredentialGrid("credentialList", sortByTitle(filtered), t("emptyVault"), t("emptyVaultText"));
+  renderCredentialGrid("credentialList", filtered, t("emptyVault"), t("emptyVaultText"));
 }
 function renderFavorites(){
-  renderCredentialGrid("favoriteList", sortByTitle(credentials.filter(x => x.favorite)), t("emptyFav"), t("emptyFavText"));
+  renderCredentialGrid("favoriteList", credentials.filter(x => x.favorite), t("emptyFav"), t("emptyFavText"));
 }
 
 /* ==========================================================
@@ -1338,21 +1751,7 @@ function updateDashboard(){
   document.getElementById("categoryCount").textContent = new Set(credentials.map(x => x.category)).size;
   document.getElementById("latestEntry").textContent = credentials.length ? credentials[credentials.length - 1].title : "None";
   document.getElementById("documentCount").textContent = documents.length;
-  renderBackupStatus();
   renderGuardianPanel();
-}
-
-function renderBackupStatus(){
-  const el = document.getElementById("lastBackupDisplay");
-  if(!el) return;
-  if(!lastBackupAt){
-    el.textContent = "Never";
-    el.style.color = "var(--danger)";
-    return;
-  }
-  const days = Math.floor((Date.now() - new Date(lastBackupAt).getTime()) / (1000 * 60 * 60 * 24));
-  el.textContent = days === 0 ? "Today" : (days === 1 ? "1 day ago" : days + " days ago");
-  el.style.color = days > 30 ? "var(--danger)" : (days > 14 ? "var(--warn)" : "var(--ok)");
 }
 
 /* ==========================================================
@@ -1388,6 +1787,7 @@ function onTypeChange(){
   }
 }
 function openAddCredential(){
+  console.log("openAddCredential: Initiated.");
   editID = null;
   document.getElementById("modalTitle").textContent = "🌲 New Item";
   clearForm();
@@ -1399,11 +1799,28 @@ function closeCredentialModal(){ document.getElementById("credentialModal").clas
 function clearForm(){
   ["newTitle","newIdentifier","newSecret","newExpiry","newTotp","newNotes"].forEach(id => document.getElementById(id).value = "");
   updateStrengthMeter();
+  document.getElementById("customFieldsContainer").innerHTML = '';
 }
 async function saveCredential(){
+  console.log("saveCredential: Initiated.");
   const title = document.getElementById("newTitle").value.trim();
   if(!title){ toast("Title is required.", "error"); return; }
   const type = document.getElementById("newType").value;
+
+  const customFields = [];
+  document.querySelectorAll('#customFieldsContainer .custom-field-row').forEach(row => {
+    const labelInput = row.querySelector('.custom-field-label');
+    const valueInput = row.querySelector('.custom-field-value');
+    const typeSelect = row.querySelector('.custom-field-type');
+    if (labelInput && valueInput && typeSelect && labelInput.value.trim() && valueInput.value.trim()) {
+      customFields.push({
+        label: labelInput.value.trim(),
+        value: valueInput.value,
+        type: typeSelect.value
+      });
+    }
+  });
+
   const item = {
     id: editID || Date.now(), type, title,
     identifier: document.getElementById("newIdentifier").value.trim(),
@@ -1412,22 +1829,27 @@ async function saveCredential(){
     totpSecret: document.getElementById("newTotp").value.replace(/\s+/g, ""),
     category: document.getElementById("newCategory").value,
     notes: document.getElementById("newNotes").value,
-    favorite: false, created: new Date().toISOString(), updated: new Date().toISOString()
+    favorite: false, created: new Date().toISOString(), updated: new Date().toISOString(),
+    customFields: customFields
   };
   if(editID){
     const old = credentials.find(x => x.id === editID);
     item.favorite = old.favorite; item.created = old.created;
-    item.updated = (old.secret !== item.secret) ? new Date().toISOString() : old.updated;
+    item.updated = (old.secret !== item.secret || JSON.stringify(old.customFields) !== JSON.stringify(item.customFields)) ? new Date().toISOString() : old.updated;
     credentials = credentials.map(x => x.id === editID ? item : x);
   } else {
     credentials.push(item);
   }
   await persist();
   renderVault(); updateDashboard(); closeCredentialModal();
+  console.log("saveCredential: Item saved and persisted.");
 }
 async function viewCredential(id){
+  console.log("viewCredential: Initiated for ID", id);
   clearInterval(totpInterval);
   const item = credentials.find(x => x.id === id);
+  if (!item) { console.error("viewCredential: Item not found for ID", id); return; }
+
   const isSecretType = item.type !== "note";
   let fields = "";
   if(item.type === "login"){ fields = `<p>👤 ${t("usernamePh")}</p><h3>${escapeHtml(item.identifier)}</h3>`; }
@@ -1438,44 +1860,83 @@ async function viewCredential(id){
     <p>🔑 ${item.type === "card" ? t("cvvPh") : t("passwordPh")}</p>
     <input id="displayPassword" type="password" value="${escapeHtml(item.secret)}" readonly>
     <br><br>
-    <button onclick="togglePasswordView(this)">${t("show")}</button>
-    <button onclick="copyPassword()">${t("copy")}</button>` : "";
+    <button class="button btn-info" onclick="togglePasswordView(this)">${t("show")}</button>
+    <button class="button btn-secondary" onclick="copyPassword()">${t("copy")}</button>` : "";
 
   const totpBlock = item.totpSecret ? `
     <div class="totp-box">
       <div><div class="totp-code" id="totpCode">------</div><div class="totp-timer">⏱ <span id="totpTimer">--</span></div></div>
-      <button onclick="copyTotp()">${t("copy")}</button>
+      <button class="button btn-secondary" onclick="copyTotp()">${t("copy")}</button>
     </div>` : "";
+
+  let customFieldsHtml = '';
+  if (item.customFields && item.customFields.length > 0) {
+    customFieldsHtml = `<hr><h3 style="margin-top:0;">Custom Fields</h3>`;
+    item.customFields.forEach((field, index) => {
+      const displayId = `displayCustomField${item.id}_${index}`; // Unique ID per item per field
+      const isPasswordField = field.type === 'password';
+      customFieldsHtml += `
+        <p>${escapeHtml(field.label)}</p>
+        <div class="field-row">
+          <input id="${displayId}" type="${isPasswordField ? 'password' : 'text'}" value="${escapeHtml(field.value)}" readonly>
+          ${isPasswordField ? `<button class="button btn-info" onclick="toggleCustomFieldView(this, '${displayId}')">${t("show")}</button>` : ''}
+          <button class="button btn-secondary" onclick="copyCustomField('${displayId}')">${t("copy")}</button>
+        </div>
+      `;
+    });
+  }
 
   document.getElementById("credentialDetails").innerHTML = `
     <h2>${typeIcon[item.type] || "🌐"} ${escapeHtml(item.title)}</h2>
     ${fields}${secretBlock}${totpBlock}
-    <hr><p>📁 ${escapeHtml(item.category)}</p><p>📝 ${escapeHtml(item.notes) || "—"}</p><br>
-    <button onclick="editCredential(${item.id})">${t("edit")}</button>
-    <button onclick="toggleFavorite(${item.id})">${t("favorite")}</button>
-    <button class="danger" onclick="deleteCredential(${item.id})">${t("delete")}</button>`;
+    <hr><p>📁 ${escapeHtml(item.category)}</p><p>📝 ${escapeHtml(item.notes) || "—"}</p>
+    ${customFieldsHtml}
+    <br>
+    <button class="button btn-secondary" onclick="editCredential(${item.id})">${t("edit")}</button>
+    <button class="button btn-warning" onclick="toggleFavorite(${item.id})">${t("favorite")}</button>
+    <button class="button btn-danger" onclick="deleteCredential(${item.id})">${t("delete")}</button>`;
 
   if(item.totpSecret){ renderTOTP(item.totpSecret); totpInterval = setInterval(() => renderTOTP(item.totpSecret), 1000); }
+  console.log("viewCredential: Details rendered.");
 }
 function togglePasswordView(button){
   const box = document.getElementById("displayPassword");
   const show = box.type === "password";
   box.type = show ? "text" : "password";
   button.innerHTML = show ? t("hide") : t("show");
+  console.log("togglePasswordView: Password visibility toggled.");
 }
 function copyPassword(){ navigator.clipboard.writeText(document.getElementById("displayPassword").value); toast(t("copied"), "success"); }
 function copyTotp(){ navigator.clipboard.writeText(document.getElementById("totpCode").textContent.replace(/\s+/g, "")); toast(t("copied"), "success"); }
+
+function toggleCustomFieldView(button, fieldId){
+  const box = document.getElementById(fieldId);
+  const show = box.type === "password";
+  box.type = show ? "text" : "password";
+  button.innerHTML = show ? t("hide") : t("show");
+  console.log(`toggleCustomFieldView: Custom field ${fieldId} visibility toggled.`);
+}
+function copyCustomField(fieldId){
+  navigator.clipboard.writeText(document.getElementById(fieldId).value);
+  toast(t("copied"), "success");
+}
+
 async function deleteCredential(id){
   if(!(await confirmDialog("Delete this item?"))) return;
+  console.log("deleteCredential: Initiated for ID", id);
   clearInterval(totpInterval);
   credentials = credentials.filter(x => x.id !== id);
   await persist();
   renderVault(); updateDashboard();
   document.getElementById("credentialDetails").innerHTML = t("itemDeleted");
+  console.log("deleteCredential: Item deleted.");
 }
 function editCredential(id){
+  console.log("editCredential: Initiated for ID", id);
   clearInterval(totpInterval);
   const item = credentials.find(x => x.id === id);
+  if (!item) { console.error("editCredential: Item not found for ID", id); return; }
+
   editID = id;
   document.getElementById("modalTitle").textContent = "✏ Edit Item";
   document.getElementById("newType").value = item.type;
@@ -1486,14 +1947,25 @@ function editCredential(id){
   document.getElementById("newTotp").value = item.totpSecret || "";
   document.getElementById("newCategory").value = item.category;
   document.getElementById("newNotes").value = item.notes;
+
+  const customFieldsContainer = document.getElementById("customFieldsContainer");
+  customFieldsContainer.innerHTML = ''; // Clear previous fields
+  (item.customFields || []).forEach(field => {
+    addCustomField(field.label, field.value, field.type);
+  });
+
   onTypeChange(); updateStrengthMeter();
   document.getElementById("credentialModal").classList.remove("hidden");
+  console.log("editCredential: Modal populated for editing.");
 }
 async function toggleFavorite(id){
+  console.log("toggleFavorite: Initiated for ID", id);
   const item = credentials.find(x => x.id === id);
+  if (!item) { console.error("toggleFavorite: Item not found for ID", id); return; }
   item.favorite = !item.favorite;
   await persist();
   renderVault(); renderFavorites(); updateDashboard();
+  console.log(`toggleFavorite: Item ${id} favorite status changed to ${item.favorite}.`);
 }
 
 /* ==========================================================
@@ -1504,6 +1976,7 @@ function generatePassword(){
   const bytes = randomBytes(18);
   document.getElementById("newSecret").value = Array.from(bytes, b => chars[b % chars.length]).join("");
   updateStrengthMeter();
+  console.log("generatePassword: Password generated.");
 }
 function passwordStrength(pass){
   if(!pass) return { pct:0, label:"", color:"var(--border)" };
@@ -1528,18 +2001,53 @@ function updateStrengthMeter(){
   document.getElementById("modalStrengthLabel").textContent = s.label;
 }
 
+// Functions to add/remove custom fields in the modal
+function addCustomField(label = '', value = '', type = 'text') {
+  console.log("addCustomField: Initiated with label:", label);
+  const container = document.getElementById("customFieldsContainer");
+  const fieldRowId = `customFieldRow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`; // Unique ID for the row
+
+  const row = document.createElement('div');
+  row.className = 'custom-field-row';
+  row.id = fieldRowId; // Assign ID to the row
+  row.innerHTML = `
+    <input type="text" class="custom-field-label" placeholder="Field Label" value="${escapeHtml(label)}">
+    <input type="${type}" class="custom-field-value" placeholder="Field Value" value="${escapeHtml(value)}">
+    <select class="custom-field-type" onchange="this.previousElementSibling.type = this.value === 'password' ? 'password' : 'text';">
+        <option value="text" ${type === 'text' ? 'selected' : ''}>Text</option>
+        <option value="password" ${type === 'password' ? 'selected' : ''}>Password</option>
+    </select>
+    <button type="button" class="button btn-danger" onclick="document.getElementById('${fieldRowId}').remove()">🗑</button>
+  `;
+  container.appendChild(row);
+}
+
 /* ==========================================================
    FOLDERS
    ========================================================== */
 function openNewFolderModal(){
-  editFolderId = null;
-  document.getElementById("newFolderModalTitle").textContent = "📁 New Folder";
-  document.getElementById("newFolderName").value = "";
-  document.getElementById("newFolderModal").classList.remove("hidden");
-  document.getElementById("newFolderName").focus();
+  try {
+    console.log("openNewFolderModal: Initiated.");
+    if (!masterKey || !currentVaultId) {
+      toast("Please open or create a vault first.", "warn");
+      console.warn("openNewFolderModal: Vault not open.");
+      return;
+    }
+    editFolderId = null;
+    document.getElementById("newFolderModalTitle").textContent = "📁 New Folder";
+    document.getElementById("newFolderName").value = "";
+    document.getElementById("newFolderModal").classList.remove("hidden");
+    document.getElementById("newFolderName").focus();
+    console.log("openNewFolderModal: Modal displayed.");
+  } catch (e) {
+    console.error("Error opening new folder modal:", e);
+    toast("An error occurred while trying to open the folder dialog.", "error");
+  }
 }
 function openRenameFolderModal(id){
+  console.log("openRenameFolderModal: Initiated for ID", id);
   const folder = docFolders.find(f => f.id === id);
+  if (!folder) { console.error("openRenameFolderModal: Folder not found for ID", id); return; }
   editFolderId = id;
   document.getElementById("newFolderModalTitle").textContent = "✏ Rename Folder";
   document.getElementById("newFolderName").value = folder.name;
@@ -1548,6 +2056,7 @@ function openRenameFolderModal(id){
 }
 function closeNewFolderModal(){ document.getElementById("newFolderModal").classList.add("hidden"); }
 async function confirmFolderModal(){
+  console.log("confirmFolderModal: Initiated.");
   const name = document.getElementById("newFolderName").value.trim();
   if(!name){ document.getElementById("newFolderName").focus(); return; }
   if(editFolderId){
@@ -1558,10 +2067,14 @@ async function confirmFolderModal(){
   await persist();
   closeNewFolderModal();
   renderDocuments();
+  console.log("confirmFolderModal: Folder saved/renamed.");
 }
 async function deleteDocFolder(id){
   if(!(await confirmDialog("Delete this folder? Its documents and subfolders move up one level."))) return;
+  console.log("deleteDocFolder: Initiated for ID", id);
   const folder = docFolders.find(f => f.id === id);
+  if (!folder) { console.error("deleteDocFolder: Folder not found for ID", id); return; }
+
   const parentId = folder.parentId;
   docFolders.forEach(f => { if(f.parentId === id) f.parentId = parentId; });
   documents.forEach(d => { if(d.folderId === id) d.folderId = parentId; });
@@ -1569,8 +2082,12 @@ async function deleteDocFolder(id){
   if(currentFolderId === id) currentFolderId = parentId;
   await persist();
   renderDocuments();
+  console.log("deleteDocFolder: Folder deleted.");
 }
-function navigateToFolder(id){ currentFolderId = id; renderDocuments(); }
+function navigateToFolder(id){
+  console.log("navigateToFolder: Navigating to folder ID", id);
+  currentFolderId = id; renderDocuments();
+}
 function renderBreadcrumb(){
   const box = document.getElementById("docBreadcrumb");
   const path = [];
@@ -1596,14 +2113,16 @@ function renderSubfolders(){
 }
 
 /* ==========================================================
-   DOCUMENTS — now stored directly inside the vault file
+   DOCUMENTS
    ========================================================== */
 function docIcon(mimeType){
   if(mimeType && mimeType.startsWith("image/")) return "🖼";
+  if(mimeType && mimeType.startsWith("video/")) return "🎥";
   if(mimeType === "application/pdf") return "📕";
   return "📄";
 }
 function renderDocuments(){
+  console.log("renderDocuments: Initiated.");
   renderBreadcrumb();
   renderSubfolders();
   const box = document.getElementById("documentList");
@@ -1620,61 +2139,112 @@ function renderDocuments(){
             <div class="cr-sub">${(d.size / 1024).toFixed(0)} KB</div>
           </div>
         </div>
-        <div class="cr-badges"><button class="ghost" onclick="event.stopPropagation();deleteDocumentUI(${d.id})">🗑</button></div>
+        <div class="cr-badges">
+          <button class="button btn-danger ghost" onclick="event.stopPropagation();deleteDocumentUI(${d.id})" title="${t("delete")}">🗑</button>
+        </div>
       </div>`).join("");
   }
   document.getElementById("documentCount").textContent = documents.length;
+  console.log("renderDocuments: Rendered document list.");
 }
 async function handleDocFileSelect(){
+  console.log("handleDocFileSelect: Initiated.");
   const input = document.getElementById("docFileInput");
   const files = Array.from(input.files);
   if(files.length === 0) return;
   for(const file of files){
     try{
       const buf = await file.arrayBuffer();
+      const docId = Date.now() + Math.floor(Math.random() * 100000);
+      console.log(`handleDocFileSelect: Adding document "${file.name}" with docId=${docId}.`);
+      const docIv = await sentinelIdb.saveDocumentContent(masterKey, docId, buf);
+
       documents.push({
-        id: Date.now() + Math.floor(Math.random() * 100000),
+        id: docId,
         folderId: currentFolderId, name: file.name,
         mimeType: file.type || "application/octet-stream", size: file.size,
-        dataB64: bufToB64(buf), created: new Date().toISOString()
+        idbKey: docId,
+        docIv: docIv,
+        created: new Date().toISOString()
       });
+      console.log(`handleDocFileSelect: Document "${file.name}" metadata added to app state.`);
     } catch(err){
       toast(`⚠ Could not add "${file.name}": ${err.message || err}`, "error");
-      console.error(err);
+      console.error(`handleDocFileSelect: Error adding document "${file.name}":`, err);
     }
   }
   input.value = "";
   await persist();
   renderDocuments();
 }
-function viewDocument(id){
+async function viewDocument(id){
+  console.log("viewDocument: Initiated for ID", id);
   const doc = documents.find(d => d.id === id);
-  if(!doc) return;
-  const bytes = b64ToBuf(doc.dataB64);
-  const blob = new Blob([bytes], { type: doc.mimeType });
+  if(!doc) { console.error("viewDocument: Document not found for ID", id); return; }
+
+  console.log(`viewDocument: Attempting to load content for "${doc.name}" from IDB (id=${doc.idbKey}, iv=${doc.docIv?.substring(0, 10)}...).`);
+  let decryptedBuffer;
+  try {
+    decryptedBuffer = await sentinelIdb.loadDocumentContent(doc.idbKey, doc.docIv);
+    if (!decryptedBuffer) {
+      throw new Error("Document content not found or corrupted in IndexedDB.");
+    }
+    console.log(`viewDocument: Document "${doc.name}" content loaded and decrypted.`);
+  } catch (err) {
+    toast(`Failed to load document content for "${doc.name}": ${err.message || err}`, "error");
+    console.error(`viewDocument: Failed to load content for "${doc.name}":`, err);
+    return;
+  }
+
+  const blob = new Blob([decryptedBuffer], { type: doc.mimeType });
   const url = URL.createObjectURL(blob);
   document.getElementById("docModalTitle").textContent = `${docIcon(doc.mimeType)} ${doc.name}`;
   const body = document.getElementById("docModalBody");
-  body.innerHTML = doc.mimeType.startsWith("image/")
-    ? `<img src="${url}" style="max-width:100%;border-radius:12px;">`
-    : `<p>${(doc.size/1024).toFixed(0)} KB — ${escapeHtml(doc.mimeType)}</p>`;
-  body.innerHTML += `<br><a href="${url}" download="${escapeHtml(doc.name)}"><button>${t("download")}</button></a>
-    <button class="danger" onclick="deleteDocumentUI(${doc.id})">${t("delete")}</button>`;
+
+  if (doc.mimeType && doc.mimeType.startsWith("image/")) {
+    body.innerHTML = `<img src="${url}" style="max-width:100%;border-radius:12px;">`;
+    console.log(`viewDocument: Displaying image ${doc.name}.`);
+  } else if (doc.mimeType && doc.mimeType.startsWith("video/")) {
+    body.innerHTML = `
+      <p><strong>Note:</strong> Videos cannot be played directly within the app to prevent browser crashes due to large file sizes. Please download to view.</p>
+      <p>File type: ${escapeHtml(doc.mimeType)}</p>
+    `;
+    console.log(`viewDocument: Displaying video placeholder for ${doc.name}.`);
+  } else {
+    body.innerHTML = `<p>${(doc.size/1024).toFixed(0)} KB — ${escapeHtml(doc.mimeType)}</p>`;
+    console.log(`viewDocument: Displaying generic file info for ${doc.name}.`);
+  }
+
+  body.innerHTML += `<br><a href="${url}" download="${escapeHtml(doc.name)}"><button class="button btn-secondary">${t("download")}</button></a>
+    <button class="button btn-danger" onclick="deleteDocumentUI(${doc.id})">${t("delete")}</button>`;
   document.getElementById("documentModal").classList.remove("hidden");
 }
 function closeDocumentModal(){ document.getElementById("documentModal").classList.add("hidden"); }
 async function deleteDocumentUI(id){
   if(!(await confirmDialog("Delete this document permanently?"))) return;
+  console.log("deleteDocumentUI: Initiated for ID", id);
+  const doc = documents.find(d => d.id === id);
+  if (doc) {
+    try {
+      await sentinelIdb.deleteDocumentContent(doc.idbKey);
+      console.log(`deleteDocumentUI: Document content deleted from IndexedDB for ${doc.name}.`);
+    } catch (e) {
+      toast("Failed to delete document content from local storage.", "error");
+      console.error("deleteDocumentUI: Failed to delete from IndexedDB:", e);
+    }
+  }
   documents = documents.filter(d => d.id !== id);
   await persist();
   closeDocumentModal();
   renderDocuments();
+  console.log("deleteDocumentUI: Document metadata removed.");
 }
 
 /* ==========================================================
    STARTUP
    ========================================================== */
 window.onload = function(){
+  console.log("window.onload: Script starting execution.");
   applyTranslations();
   applyTheme();
   onTypeChange();
@@ -1682,10 +2252,7 @@ window.onload = function(){
   document.getElementById("fsaNote").textContent = hasFSAccess
     ? "Live auto-save is available in this browser."
     : "This browser will use manual Save (works everywhere, including file://).";
-
-  if("serviceWorker" in navigator && location.protocol.startsWith("http")){
-    navigator.serviceWorker.register("sw.js").catch((err) => console.warn("Service worker registration failed:", err));
-  }
+  console.log("Script fully loaded and initial setup complete.");
 };
 </script>
 </body>
