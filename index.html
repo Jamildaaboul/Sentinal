@@ -16,7 +16,7 @@
     <style>
         /*
          * Merged and Updated CSS for Jamil's Sentinel
-         * This combines your original CSS with the new aesthetic enhancements.
+         * This combines your original CSS with the new aesthetic enhancements and adds responsiveness.
          */
 
         /* CSS Variables for New Palette (Centralized Color Management) */
@@ -76,17 +76,18 @@
 
         body {
             margin: 0;
-            /* Removed original background gradient. Using solid color from new palette for consistency. */
+            /* Using solid color for body background, removed original gradient for clarity. Can be uncommented if preferred */
+            /* background:linear-gradient(135deg,var(--bg1),var(--bg2)); */
             background-color: var(--color-background-primary);
             color: var(--color-text-primary);
             line-height: 1.6;
-            /* IMPORTANT: These were the lines causing the layout issue. They are removed from body. */
+            /* IMPORTANT: These were the lines causing the initial layout issue. They are removed from body. */
             /* display: flex; */
             /* justify-content: center; */
             /* align-items: flex-start; */
             min-height: 100vh;
             overflow-x: hidden; /* Prevent horizontal scrollbars */
-            padding: 20px; /* Overall page padding around content */
+            padding: 20px; /* Overall page padding around content on larger screens */
         }
 
         /* Headings - New Styling */
@@ -154,7 +155,7 @@
             margin: 4px; /* General margin for buttons */
         }
 
-        /* New Semantic Button Classes - Use these in your HTML (e.g., <button class="btn-primary">) */
+        /* New Semantic Button Classes - Use these in your HTML (e.g., <button class="button btn-primary">) */
         .btn-primary { /* Primary action: Save, Create, Add */
             background-color: var(--color-action-primary);
             color: #FFFFFF;
@@ -302,7 +303,7 @@
 
         /* Lang and Theme Toggles in sidebar */
         .sidebar .lang-toggle, .sidebar .theme-toggle {
-            position:static; /* Override absolute positioning for sidebar */
+            position:static; /* Ensure they stay in flow */
             margin: 0 4px; /* Add some margin */
             flex: none; /* Disable flex-grow */
         }
@@ -496,6 +497,102 @@
         .row-copy-btn:active { transform:scale(.9); }
 
         .footnote { font-size:12px; color:var(--muted); text-align:center; margin-top:18px; }
+
+
+        /* ==========================================================
+           RESPONSIVE ADJUSTMENTS (FOR SCREENS <= 768px WIDE)
+           ========================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px; /* Reduce overall body padding on small screens */
+            }
+
+            /* Hide the sidebar completely on small screens */
+            .sidebar {
+                display: none;
+            }
+
+            /* Make the main content occupy the full width */
+            .main {
+                margin-left: 0; /* Remove the margin that was making space for the sidebar */
+                padding: 15px 10px; /* Adjust padding for mobile view: vertical 15px, horizontal 10px */
+                width: 100%;
+                max-width: 100%; /* Ensure it takes full available width */
+            }
+
+            /* Adjust login card/modal box width for mobile */
+            .login-card, .modal-box {
+                max-width: calc(100% - 20px); /* Leave 10px padding on each side (total 20px from body) */
+                padding: 20px; /* Reduced padding for smaller cards */
+                border-radius: 12px; /* Slightly less rounded */
+                margin-left: auto; /* Ensure it stays centered */
+                margin-right: auto;
+            }
+
+            /* Adjust Lang/Theme Toggles on Landing/Password Gate */
+            .lang-toggle { top: 10px; right: 10px; padding: 6px 10px; font-size: 12px; }
+            .theme-toggle { top: 10px; right: 70px; padding: 6px 10px; font-size: 12px; }
+            [dir="rtl"] .lang-toggle { right: auto; left: 10px; }
+            [dir="rtl"] .theme-toggle { left: 70px; right: auto; }
+
+            /* Button sizing and spacing for mobile */
+            button, .button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                margin: 3px; /* Slightly less margin */
+            }
+            .button i, button i {
+                margin-right: 6px; /* Smaller icon margin */
+            }
+
+            /* Credential Row stacking */
+            .credential-row {
+                flex-direction: column; /* Stack vertically */
+                align-items: flex-start; /* Align items to the left */
+                gap: 5px; /* Reduce gap */
+                padding: 10px;
+            }
+            .cr-main, .cr-badges {
+                width: 100%; /* Make them take full width */
+            }
+            .cr-badges {
+                justify-content: flex-end; /* Push badges to the right if space allows */
+            }
+
+            /* Inputs/buttons in field-rows */
+            .field-row {
+                flex-wrap: wrap; /* Allow field rows to wrap */
+                gap: 5px;
+            }
+            .field-row input, .field-row select {
+                width: 100%; /* Take full width */
+                margin: 0; /* Remove extra margins */
+            }
+            .field-row button {
+                width: auto; /* Let buttons size to content */
+                flex-grow: 0;
+                margin: 0;
+                padding: 8px 12px; /* Smaller padding for buttons in field-row */
+            }
+
+            /* Custom field rows */
+            .custom-field-row {
+                flex-direction: column; /* Stack custom field elements */
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .custom-field-row input, .custom-field-row select, .custom-field-row button {
+                width: 100%; /* Take full width */
+                margin: 0;
+                padding: 8px 12px; /* Smaller padding */
+            }
+
+            /* Specific adjustment for buttons inside credential details to stack if they can't fit */
+            #credentialDetails .button {
+                width: 100%; /* Force buttons to stack in item details */
+                margin-bottom: 5px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -516,7 +613,7 @@
     <p style="font-size:14px;color:var(--muted)" data-i18n="landingTagline">Your vault lives in one portable file — keep it on a thumb drive, open it anywhere.</p>
     <!-- Buttons updated to use new semantic classes -->
     <button class="button btn-primary wide" onclick="openVaultFile()" data-i18n="openVaultBtn">📂 Open Vault File</button>
-    <button class="button btn-info wide ghost" onclick="openCreateForm()" data-i18n="createVaultFileBtn">✨ Create New Vault</button>
+    <button class="button ghost wide" onclick="openCreateForm()" data-i18n="createVaultFileBtn">✨ Create New Vault</button>
     <input type="file" id="openFileInput" class="hidden" accept=".sentinel,.json" onchange="handleClassicOpenFile()">
     <p id="migrateLink" class="hidden footnote">
       <a href="#" onclick="startMigration();return false;" data-i18n="migrateLinkText">Migrate data from this browser →</a>
@@ -611,7 +708,7 @@
         <div id="docBreadcrumb" class="breadcrumb"></div>
         <div id="subfolderGrid" class="subfolder-grid"></div>
         <!-- Button updated to use new semantic class -->
-        <button class="button btn-secondary ghost" onclick="openNewFolderModal()" data-i18n="newFolderBtn">📁 New Folder</button>
+        <button class="button ghost" onclick="openNewFolderModal()" data-i18n="newFolderBtn">📁 New Folder</button>
       </div>
       <div class="card">
         <div id="documentList" class="credential-list"></div>
