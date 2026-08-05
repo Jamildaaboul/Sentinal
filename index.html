@@ -74,6 +74,10 @@
             font-family: 'Inter', sans-serif; /* Use Inter for everything */
         }
 
+        html, body {
+            height: 100%; /* Ensure full height for correct scrolling behavior */
+        }
+
         body {
             margin: 0;
             /* Using solid color for body background, removed original gradient for clarity. Can be uncommented if preferred */
@@ -81,13 +85,14 @@
             background-color: var(--color-background-primary);
             color: var(--color-text-primary);
             line-height: 1.6;
-            /* IMPORTANT: These were the lines causing the initial layout issue. They are removed from body. */
-            /* display: flex; */
-            /* justify-content: center; */
-            /* align-items: flex-start; */
             min-height: 100vh;
             overflow-x: hidden; /* Prevent horizontal scrollbars */
             padding: 20px; /* Overall page padding around content on larger screens */
+        }
+
+        /* Prevent scrolling when sidebar is open */
+        body.sidebar-open {
+            overflow: hidden;
         }
 
         /* Headings - New Styling */
@@ -298,6 +303,8 @@
             padding:25px;
             box-shadow:5px 0 25px var(--color-shadow-light); /* Use new shadow variable */
             overflow-y:auto;
+            z-index: 1000; /* Ensure sidebar is above main content */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for slide */
         }
         [dir="rtl"] .sidebar { left:auto; right:0; box-shadow:-5px 0 25px var(--color-shadow-light); }
 
@@ -332,6 +339,47 @@
             margin-right: auto; /* Center the main content area */
         }
         [dir="rtl"] .main { margin-left:0; margin-right:260px; }
+
+        /* Hamburger button styling (desktop - hidden) */
+        .hamburger-btn {
+            display: none; /* Hidden by default on desktop */
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001; /* Above sidebar */
+            background: var(--color-action-primary);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+        }
+        .hamburger-btn:hover {
+            background: var(--color-action-primary-hover);
+        }
+        [dir="rtl"] .hamburger-btn {
+            left: auto;
+            right: 15px;
+        }
+
+
+        /* Overlay for when sidebar is open */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
 
         @keyframes pageFadeIn { from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
         .page-fade-in { animation:pageFadeIn .25s var(--ease); }
@@ -507,10 +555,25 @@
                 padding: 10px; /* Reduce overall body padding on small screens */
             }
 
-            /* Hide the sidebar completely on small screens */
+            /* Sidebar visibility and positioning for mobile */
             .sidebar {
-                display: none;
+                transform: translateX(-100%); /* Off-screen to the left */
+                box-shadow: none; /* Remove shadow when off-screen */
             }
+            .sidebar.open {
+                transform: translateX(0%); /* Slide into view */
+                box-shadow: 5px 0 25px var(--color-shadow-light); /* Add shadow when open */
+            }
+            [dir="rtl"] .sidebar {
+                transform: translateX(100%); /* Off-screen to the right for RTL */
+                left: auto;
+                right: -260px; /* Use right property for RTL */
+            }
+            [dir="rtl"] .sidebar.open {
+                transform: translateX(0%); /* Slide into view for RTL */
+                right: 0;
+            }
+
 
             /* Make the main content occupy the full width */
             .main {
@@ -519,6 +582,15 @@
                 width: 100%;
                 max-width: 100%; /* Ensure it takes full available width */
             }
+
+            /* Hamburger button styling (mobile - visible) */
+            .hamburger-btn {
+                display: block; /* Show hamburger button on mobile */
+            }
+            .main {
+                padding-top: 60px; /* Add space for the fixed hamburger button in the main content */
+            }
+
 
             /* Adjust login card/modal box width for mobile */
             .login-card, .modal-box {
@@ -552,11 +624,13 @@
                 gap: 5px; /* Reduce gap */
                 padding: 10px;
             }
-            .cr-main, .cr-badges {
+            .cr-main {
                 width: 100%; /* Make them take full width */
             }
             .cr-badges {
-                justify-content: flex-end; /* Push badges to the right if space allows */
+                width: 100%; /* Make them take full width */
+                justify-content: flex-start; /* Align badges to the left, below main info */
+                margin-top: 5px; /* Add some space from stacked content above */
             }
 
             /* Inputs/buttons in field-rows */
@@ -591,6 +665,11 @@
             #credentialDetails .button {
                 width: 100%; /* Force buttons to stack in item details */
                 margin-bottom: 5px;
+            }
+
+            /* Hide elements that shouldn't appear on mobile in sidebar */
+            .sidebar .lang-toggle, .sidebar .theme-toggle {
+                display: none;
             }
         }
     </style>
@@ -642,6 +721,9 @@
 </div>
 
 <div id="app">
+  <!-- Sidebar Overlay -->
+  <div id="sidebarOverlay" class="sidebar-overlay hidden" onclick="toggleSidebar()"></div>
+
   <div class="sidebar">
     <div class="brand">🌲 <span data-i18n="appName">Jamil's Sentinel</span></div>
     <p id="currentVaultLabel"></p>
@@ -660,6 +742,8 @@
   </div>
 
   <div class="main">
+    <!-- Hamburger button for mobile -->
+    <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
     <div id="dashboard" class="hidden">
       <div class="card">
@@ -1242,7 +1326,7 @@ const sentinelIdb = {
     if (!tx) { console.error("Failed to get IndexedDB transaction for clearing."); return; }
 
     return new Promise((resolve, reject) => {
-        const store = tx.objectStore(SENTINEL_IDB_STORE_DOCS);
+        const store = tx.objectStore(SENTENIL_IDB_STORE_DOCS);
         store.clear();
         tx.oncomplete = () => { console.log("IndexedDB: Document store cleared."); resolve(); };
         tx.onerror = (event) => { console.error("IndexedDB clear error:", event.target.error); reject(event.target.error); };
@@ -1749,6 +1833,10 @@ function showPage(page){
   if(page === "favorites") renderFavorites();
   if(page === "dashboard") updateDashboard();
   if(page === "documents") renderDocuments();
+  // Close sidebar after navigation on mobile
+  if (window.innerWidth <= 768) {
+      toggleSidebar(false);
+  }
 }
 
 /* ==========================================================
@@ -2338,6 +2426,29 @@ async function deleteDocumentUI(id){
 }
 
 /* ==========================================================
+   SIDEBAR TOGGLE (MOBILE)
+   ========================================================== */
+function toggleSidebar(open) {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
+
+    if (open === undefined) { // If open parameter is not provided, toggle current state
+        open = !sidebar.classList.contains('open');
+    }
+
+    if (open) {
+        sidebar.classList.add('open');
+        overlay.classList.add('open');
+        body.classList.add('sidebar-open'); // Prevent body scroll
+    } else {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+        body.classList.remove('sidebar-open'); // Re-enable body scroll
+    }
+}
+
+/* ==========================================================
    STARTUP
    ========================================================== */
 window.onload = function(){
@@ -2350,6 +2461,11 @@ window.onload = function(){
     ? "Live auto-save is available in this browser."
     : "This browser will use manual Save (works everywhere, including file://).";
   console.log("Script fully loaded and initial setup complete.");
+
+  // Call updateDashboard here as well, in case app starts directly into dashboard
+  // and dashboard is the initial page visible, to ensure stats are shown.
+  // This is safe even if masterKey isn't set yet, as it will just render 0s.
+  updateDashboard();
 };
 </script>
 </body>
