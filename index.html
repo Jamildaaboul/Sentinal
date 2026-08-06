@@ -153,7 +153,7 @@
             font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            border: none;
+            border: 1px solid transparent; /* CRITICAL FIX: Default transparent border for base button */
             border-radius: 8px; /* Consistent button rounding */
             transition: all 0.2s var(--ease);
             text-decoration: none;
@@ -223,7 +223,7 @@
         button.ghost, .button.ghost {
             background: transparent;
             color: var(--forest);
-            border: 1px solid var(--forest);
+            border: 1px solid var(--forest); /* This border will now correctly apply */
         }
         button.ghost:hover, .button.ghost:hover {
             background: var(--mint);
@@ -463,10 +463,14 @@
             flex:1;
             margin-bottom: 0; /* Clear margin bottom from general input rules */
         }
+        /* Specific sizing for icon buttons within field-row */
         .field-row button {
-            padding:12px 14px;
+            padding: 10px 12px; /* Adjusted padding for a more compact, square icon button */
+            font-size: 1.1rem; /* Adjust icon size */
             margin:0; /* Clear margin from general button rules */
+            flex-shrink: 0; /* Prevent button from shrinking */
         }
+
 
         /* Custom Field Row - Merged & New Styling */
         .custom-field-row {
@@ -1326,7 +1330,7 @@ const sentinelIdb = {
     if (!tx) { console.error("Failed to get IndexedDB transaction for clearing."); return; }
 
     return new Promise((resolve, reject) => {
-        const store = tx.objectStore(SENTENIL_IDB_STORE_DOCS);
+        const store = tx.objectStore(SENTINEL_IDB_STORE_DOCS);
         store.clear();
         tx.oncomplete = () => { console.log("IndexedDB: Document store cleared."); resolve(); };
         tx.onerror = (event) => { console.error("IndexedDB clear error:", event.target.error); reject(event.target.error); };
@@ -2466,6 +2470,12 @@ window.onload = function(){
   // and dashboard is the initial page visible, to ensure stats are shown.
   // This is safe even if masterKey isn't set yet, as it will just render 0s.
   updateDashboard();
+
+  // Attach event listener for hamburger button AFTER it's guaranteed to be in the DOM
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  if (hamburgerBtn) {
+      hamburgerBtn.addEventListener('click', () => toggleSidebar());
+  }
 };
 </script>
 </body>
