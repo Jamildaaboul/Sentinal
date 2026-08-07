@@ -653,6 +653,43 @@
                 padding: 8px 12px; /* Smaller padding for buttons in field-row */
             }
 
+            /* Keep every control in the Add Item modal uniform on phones. */
+            #credentialModal .modal-scroll > input,
+            #credentialModal .modal-scroll > select,
+            #credentialModal .field-row input,
+            #credentialModal .field-row button,
+            #credentialModal .custom-field-row input,
+            #credentialModal .custom-field-row select,
+            #credentialModal .custom-field-row button {
+                height: 48px;
+                min-height: 48px;
+                line-height: 1.2;
+            }
+            #credentialModal .modal-scroll > input,
+            #credentialModal .modal-scroll > select,
+            #credentialModal .modal-scroll > textarea {
+                width: 100%;
+                margin: 8px 0;
+            }
+            #credentialModal .modal-scroll > textarea {
+                min-height: 120px;
+                height: 120px;
+                resize: vertical;
+            }
+            #credentialModal .field-row {
+                flex-wrap: nowrap;
+                align-items: stretch;
+            }
+            #credentialModal .field-row input {
+                width: auto;
+                flex: 1 1 auto;
+            }
+            #credentialModal .field-row button {
+                width: 48px;
+                flex: 0 0 48px;
+                padding: 0;
+            }
+
             /* Custom field rows */
             .custom-field-row {
                 flex-direction: column; /* Stack custom field elements */
