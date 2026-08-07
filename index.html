@@ -784,7 +784,7 @@
 
   <div class="main">
     <!-- Hamburger button for mobile -->
-    <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()" aria-label="Open navigation menu"><span aria-hidden="true">☰</span></button>
 
     <div id="dashboard" class="hidden">
       <div class="card">
@@ -2507,12 +2507,6 @@ window.onload = function(){
   // and dashboard is the initial page visible, to ensure stats are shown.
   // This is safe even if masterKey isn't set yet, as it will just render 0s.
   updateDashboard();
-
-  // Attach event listener for hamburger button AFTER it's guaranteed to be in the DOM
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  if (hamburgerBtn) {
-      hamburgerBtn.addEventListener('click', () => toggleSidebar());
-  }
 };
 </script>
 </body>
