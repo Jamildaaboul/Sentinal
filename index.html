@@ -912,8 +912,25 @@
     <h2 id="docModalTitle">📄 Document</h2>
     <div id="docModalBody" class="modal-scroll"></div>
     <div class="modal-footer">
-      <!-- Buttons updated to use new semantic classes -->
+      <!-- Buttons updated to use new semantic class -->
       <button class="button btn-secondary ghost" onclick="closeDocumentModal()" data-i18n="cancelBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOCUMENT EDIT MODAL -->
+<div id="documentEditModal" class="modal hidden">
+  <div class="modal-box">
+    <h2>✏ Edit Document</h2>
+    <div class="modal-scroll">
+      <label for="editDocumentName">Document Name</label>
+      <input id="editDocumentName" type="text" placeholder="Document name">
+      <label for="editDocumentFolder">Folder</label>
+      <select id="editDocumentFolder"></select>
+    </div>
+    <div class="modal-footer">
+      <button class="button btn-primary" onclick="saveDocumentEdit()">💾 Save</button>
+      <button class="button btn-secondary ghost" onclick="closeDocumentEditModal()" data-i18n="cancelBtn">Cancel</button>
     </div>
   </div>
 </div>
@@ -1179,7 +1196,7 @@ let currentFolderId = null;
 let hasUnsavedChanges = false;
 let pendingOpenText = null, pendingFileHandle = null;
 let gateMode = "unlock";
-let editID = null, editFolderId = null;
+let editID = null, editFolderId = null, editDocumentId = null;
 let lastGuardianScore = null;
 let autoLockTimer = null;
 let currentVaultId = null; // A unique ID for the currently open vault's IndexedDB
@@ -2366,6 +2383,7 @@ function renderDocuments(){
           </div>
         </div>
         <div class="cr-badges">
+          <button class="button btn-secondary ghost" onclick="event.stopPropagation();openDocumentEditModal(${d.id})" title="Edit document">✏</button>
           <button class="button btn-danger ghost" onclick="event.stopPropagation();deleteDocumentUI(${d.id})" title="${t("delete")}">🗑</button>
         </div>
       </div>`).join("");
@@ -2442,10 +2460,39 @@ async function viewDocument(id){
   }
 
   body.innerHTML += `<br><a href="${url}" download="${escapeHtml(doc.name)}"><button class="button btn-secondary">${t("download")}</button></a>
+    <button class="button btn-secondary" onclick="openDocumentEditModal(${doc.id})">✏ Edit</button>
     <button class="button btn-danger" onclick="deleteDocumentUI(${doc.id})">${t("delete")}</button>`;
   document.getElementById("documentModal").classList.remove("hidden");
 }
 function closeDocumentModal(){ document.getElementById("documentModal").classList.add("hidden"); }
+function openDocumentEditModal(id){
+  const doc = documents.find(d => d.id === id);
+  if(!doc) return;
+  editDocumentId = id;
+  document.getElementById("editDocumentName").value = doc.name || "";
+  const folderSelect = document.getElementById("editDocumentFolder");
+  const options = [{ id: null, name: t("rootFolder") }, ...docFolders];
+  folderSelect.innerHTML = options.map(folder =>
+    `<option value="${folder.id === null ? "" : folder.id}" ${((doc.folderId || null) === folder.id) ? "selected" : ""}>${escapeHtml(folder.name)}</option>`
+  ).join("");
+  document.getElementById("documentEditModal").classList.remove("hidden");
+  document.getElementById("editDocumentName").focus();
+}
+function closeDocumentEditModal(){ document.getElementById("documentEditModal").classList.add("hidden"); }
+async function saveDocumentEdit(){
+  const doc = documents.find(d => d.id === editDocumentId);
+  if(!doc) return;
+  const name = document.getElementById("editDocumentName").value.trim();
+  if(!name){ document.getElementById("editDocumentName").focus(); return; }
+  const folderValue = document.getElementById("editDocumentFolder").value;
+  doc.name = name;
+  doc.folderId = folderValue === "" ? null : Number(folderValue);
+  await persist();
+  closeDocumentEditModal();
+  closeDocumentModal();
+  renderDocuments();
+  toast("Document updated.", "success");
+}
 async function deleteDocumentUI(id){
   if(!(await confirmDialog("Delete this document permanently?"))) return;
   console.log("deleteDocumentUI: Initiated for ID", id);
